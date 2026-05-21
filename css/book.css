@@ -1,7 +1,9 @@
 /* =========================================================
-   THE BOOK
-   The book lives in a 3D scene. Pages stack on top of each other
-   and rotate around their left edge (spine) to flip.
+   THE BOOK — two-page spread
+   Each leaf is anchored to the central spine on the left edge.
+   Unflipped leaves stack on the RIGHT half; flipping a leaf
+   rotates it across the spine onto the LEFT half, showing
+   its back face as the new left page.
    ========================================================= */
 
 .book {
@@ -10,83 +12,292 @@
   height: var(--book-h);
   transform-style: preserve-3d;
   transition: transform 1.2s var(--ease-soft);
-  /* book starts closed, slightly tilted, centered like a hero object */
-  transform: rotateX(8deg) rotateY(-8deg) scale(.92);
+  /* book starts subtly tilted in 3D space */
+  transform: rotateX(6deg) rotateY(0deg) scale(.96);
   z-index: 10;
 }
+.book.is-open { transform: rotateX(0deg) rotateY(0deg) scale(1); }
 
-/* When opened we tilt it down to face the reader */
-.book.is-open {
-  transform: rotateX(0deg) rotateY(0deg) scale(1);
-}
-
-/* Soft shadow on the ground beneath the book */
+/* ground shadow */
 .book__shadow {
   position: absolute;
-  left: -5%;
-  right: -5%;
-  bottom: -8%;
-  height: 60px;
-  background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.55) 0%, rgba(0,0,0,.25) 35%, rgba(0,0,0,0) 70%);
-  filter: blur(8px);
+  left: 2%;
+  right: 2%;
+  bottom: -16px;
+  height: 32px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.6) 0%, rgba(0,0,0,.25) 35%, rgba(0,0,0,0) 70%);
+  filter: blur(10px);
   z-index: -1;
   pointer-events: none;
-  transform: translateZ(-1px);
 }
 
 /* =========================================================
-   PAGES
+   STATIC BACKGROUND LAYERS (below leaves)
+   ========================================================= */
+
+/* The left endpaper — visible before any leaf is flipped */
+.book__endpaper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--page-w);
+  height: 100%;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(86,52,43,.08), transparent 50%),
+    radial-gradient(circle at 80% 100%, rgba(115,26,30,.06), transparent 55%),
+    linear-gradient(135deg, var(--c-paper-2), var(--c-paper));
+  border-radius: 6px 2px 2px 6px;
+  box-shadow:
+    inset -10px 0 18px -10px rgba(0,0,0,.35),
+    inset 6px 6px 22px -6px rgba(0,0,0,.12);
+  z-index: 1;
+  overflow: hidden;
+}
+.book__endpaper::before {
+  /* paper grain */
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .14;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+.endpaper__inner {
+  position: relative;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: 14px;
+  padding: 12% 14% 14%;
+  text-align: center;
+  z-index: 2;
+}
+.endpaper__crest {
+  display: flex;
+  justify-content: center;
+}
+.endpaper__crest img {
+  height: 28px;
+  width: auto;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(30%) saturate(1200%) hue-rotate(350deg);
+  opacity: .85;
+}
+.endpaper__ornament {
+  align-self: center;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  background:
+    radial-gradient(circle at 50% 50%, var(--c-gold) 0 4px, transparent 5px),
+    conic-gradient(from 0deg, var(--c-burgundy) 0 8%, transparent 8% 25%, var(--c-burgundy) 25% 33%, transparent 33% 50%, var(--c-burgundy) 50% 58%, transparent 58% 75%, var(--c-burgundy) 75% 83%, transparent 83% 100%);
+  border-radius: 50%;
+  opacity: .5;
+}
+.endpaper__motto {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(28px, 3vw, 42px);
+  color: var(--c-bark);
+  letter-spacing: .01em;
+  line-height: 1;
+}
+.endpaper__subtitle {
+  font-family: var(--ff-display);
+  font-size: 14px;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--c-burgundy);
+  opacity: .7;
+}
+.endpaper__cutout {
+  position: absolute;
+  bottom: 6%;
+  left: 8%;
+  width: 30%;
+  max-width: 130px;
+  opacity: .22;
+  filter: drop-shadow(1px 2px 0 rgba(0,0,0,.1));
+  z-index: 1;
+}
+
+/* The right-side back cover — visible after all leaves are flipped */
+.book__right-base {
+  position: absolute;
+  top: 0;
+  left: var(--page-w);
+  width: var(--page-w);
+  height: 100%;
+  background: linear-gradient(135deg, #3a1f17, #56342b 70%, #6b3f31);
+  border-radius: 2px 6px 6px 2px;
+  box-shadow:
+    inset 10px 0 18px -10px rgba(0,0,0,.6),
+    inset -6px 6px 22px -6px rgba(255,255,255,.06);
+  z-index: 1;
+  overflow: hidden;
+}
+.back-cover {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  align-items: center;
+  justify-items: center;
+  text-align: center;
+  padding: 14%;
+  color: var(--c-cream);
+}
+.back-cover__logo {
+  align-self: end;
+  height: 30px;
+  width: auto;
+  filter: brightness(0) invert(1);
+  opacity: .85;
+}
+.back-cover__line {
+  width: 50px;
+  height: 1px;
+  background: var(--c-gold);
+  opacity: .8;
+  margin: 18px 0;
+}
+.back-cover__text {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-size: 18px;
+  opacity: .75;
+  letter-spacing: .02em;
+}
+
+/* Central spine */
+.book__spine {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 50%;
+  width: 14px;
+  transform: translateX(-50%);
+  background:
+    linear-gradient(90deg,
+      rgba(0,0,0,.45) 0%,
+      rgba(0,0,0,.18) 35%,
+      rgba(0,0,0,.05) 50%,
+      rgba(0,0,0,.18) 65%,
+      rgba(0,0,0,.45) 100%);
+  z-index: 60;
+  pointer-events: none;
+  border-radius: 2px;
+}
+
+/* Stacked-page edges — show book thickness */
+.book__edge {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(0,0,0,.05) 0 1px,
+      transparent 1px 3px,
+      rgba(86,52,43,.04) 3px 4px,
+      transparent 4px 6px
+    );
+}
+.book__edge--bottom {
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 6px;
+  border-radius: 0 0 4px 4px;
+  background:
+    linear-gradient(180deg, rgba(86,52,43,.45), rgba(0,0,0,.25)),
+    repeating-linear-gradient(
+      90deg,
+      rgba(229,212,182,.6) 0 1px,
+      rgba(86,52,43,.45) 1px 2px,
+      rgba(229,212,182,.5) 2px 3px
+    );
+  box-shadow: 0 4px 8px rgba(0,0,0,.35);
+}
+.book__edge--right {
+  top: 0;
+  bottom: 0;
+  right: -6px;
+  width: 6px;
+  border-radius: 0 4px 4px 0;
+  background:
+    linear-gradient(90deg, rgba(86,52,43,.5), rgba(0,0,0,.3)),
+    repeating-linear-gradient(
+      0deg,
+      rgba(229,212,182,.5) 0 1px,
+      rgba(86,52,43,.4) 1px 2px,
+      rgba(229,212,182,.45) 2px 3px
+    );
+  box-shadow: 4px 0 8px rgba(0,0,0,.3);
+}
+
+/* =========================================================
+   LEAVES (flipping pages)
+   Each .page is a leaf positioned on the right half,
+   anchored to the spine (its left edge).
    ========================================================= */
 .page {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: var(--page-w);
+  width: var(--page-w);
+  height: 100%;
   transform-origin: left center;
   transform-style: preserve-3d;
   transition: transform 1.05s var(--ease-paper);
   will-change: transform;
-  border-radius: 2px 8px 8px 2px;
-  box-shadow:
-    /* spine shadow on left */
-    inset 8px 0 16px -8px rgba(0,0,0,.35),
-    /* outer page shadow */
-    2px 2px 16px rgba(0,0,0,.35);
-  background: var(--c-paper);
 }
 
-/* The two faces of each page */
+/* Face common */
 .page__face {
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  border-radius: inherit;
   overflow: hidden;
+  background: var(--c-paper);
+  box-shadow:
+    inset 8px 0 18px -10px rgba(0,0,0,.35),
+    2px 2px 14px rgba(0,0,0,.18);
+  border-radius: 2px 6px 6px 2px;
 }
-.page__face--front { transform: rotateY(0deg);   z-index: 2; }
-.page__face--back  { transform: rotateY(180deg); z-index: 1; }
+.page__face--front { transform: rotateY(0deg); }
+.page__face--back {
+  transform: rotateY(180deg);
+  /* When viewed (the leaf is flipped), this face is on the LEFT side.
+     Mirror its border radii so the rounded edge is on the outer left. */
+  border-radius: 6px 2px 2px 6px;
+  box-shadow:
+    inset -8px 0 18px -10px rgba(0,0,0,.35),
+    -2px 2px 14px rgba(0,0,0,.18);
+}
 
-/* The cover page has a richer leather-like background bleeding through */
-.page--cover {
+/* The cover gets a richer, more "hard-cover" feel */
+.page--cover .page__face--front {
   background: linear-gradient(135deg, #2a1a13, #56342b);
   box-shadow:
-    inset 8px 0 24px -8px rgba(0,0,0,.7),
-    2px 4px 24px rgba(0,0,0,.6);
+    inset 10px 0 24px -10px rgba(0,0,0,.7),
+    4px 2px 24px rgba(0,0,0,.55);
 }
 
-/* z-index stack — later pages are physically beneath earlier ones */
+/* z-index stack — earlier (smaller data-page) sits ABOVE later */
 .page[data-page="0"] { z-index: 50; }
 .page[data-page="1"] { z-index: 40; }
 .page[data-page="2"] { z-index: 30; }
 .page[data-page="3"] { z-index: 20; }
 .page[data-page="4"] { z-index: 10; }
 
-/* When a page has been flipped (turned to the left) */
 .page.is-flipped { transform: rotateY(-180deg); }
-
-/* While a page is mid-flip — keep it on top of the stack */
 .page.is-flipping { z-index: 99 !important; }
 
-/* After flipping the stacking order inverts (flipped pages sit on the LEFT pile) */
+/* After flipping, the leaf sits on the left side — reverse stack */
 .page.is-flipped[data-page="0"] { z-index: 10; }
 .page.is-flipped[data-page="1"] { z-index: 20; }
 .page.is-flipped[data-page="2"] { z-index: 30; }
@@ -94,91 +305,102 @@
 .page.is-flipped[data-page="4"] { z-index: 50; }
 
 /* =========================================================
-   CORNERS — drag handles
+   PAGE CORNERS — drag/click affordances
    ========================================================= */
 .page__corner {
   position: absolute;
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   z-index: 5;
   cursor: grab;
   pointer-events: auto;
-  /* visual hint of a curled corner */
   transition: opacity .25s ease;
 }
 .page__corner:active { cursor: grabbing; }
 
 .page__corner--br {
   bottom: 0; right: 0;
-  background:
-    linear-gradient(225deg, rgba(86,52,43,.25) 0%, rgba(86,52,43,.06) 35%, transparent 55%);
+  background: linear-gradient(225deg, rgba(86,52,43,.22) 0%, rgba(86,52,43,.04) 35%, transparent 55%);
   clip-path: polygon(100% 0, 100% 100%, 0 100%);
-  border-bottom-right-radius: 8px;
+  border-bottom-right-radius: 6px;
 }
 .page__corner--bl {
   bottom: 0; left: 0;
-  background:
-    linear-gradient(135deg, rgba(86,52,43,.25) 0%, rgba(86,52,43,.06) 35%, transparent 55%);
+  background: linear-gradient(135deg, rgba(86,52,43,.22) 0%, rgba(86,52,43,.04) 35%, transparent 55%);
   clip-path: polygon(0 0, 100% 100%, 0 100%);
   border-bottom-left-radius: 2px;
 }
 
-/* subtle "peel" indicator */
 .page__corner::after {
   content: "";
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   background: var(--c-paper-2);
   border-radius: 2px;
   box-shadow: -1px -1px 2px rgba(0,0,0,.2);
   transition: transform .3s var(--ease-soft), opacity .3s ease;
   opacity: 0;
 }
-.page__corner--br::after {
-  bottom: 6px; right: 6px;
-  transform: rotate(45deg) translate(0, 0);
-}
-.page__corner--bl::after {
-  bottom: 6px; left: 6px;
-  transform: rotate(-45deg) translate(0, 0);
-}
-.page__corner:hover::after {
-  opacity: .9;
-}
-.page__corner--br:hover::after {
-  transform: rotate(45deg) translate(-3px, -3px);
-}
-.page__corner--bl:hover::after {
-  transform: rotate(-45deg) translate(3px, -3px);
-}
+.page__corner--br::after { bottom: 6px; right: 6px; transform: rotate(45deg); }
+.page__corner--bl::after { bottom: 6px; left: 6px;  transform: rotate(-45deg); }
+.page__corner:hover::after { opacity: .9; }
+.page__corner--br:hover::after { transform: rotate(45deg) translate(-3px, -3px); }
+.page__corner--bl:hover::after { transform: rotate(-45deg) translate(3px, -3px); }
 
-/* corners hidden during automated animations */
 .book.is-animating .page__corner { pointer-events: none; }
 
 /* =========================================================
-   ENTER ANIMATION (book settles into view)
+   ENTRY ANIMATION
    ========================================================= */
 @keyframes bookEnter {
   from {
     opacity: 0;
-    transform: rotateX(24deg) rotateY(-22deg) translateY(40px) scale(.86);
+    transform: rotateX(20deg) rotateY(0deg) translateY(40px) scale(.88);
   }
   to {
     opacity: 1;
-    transform: rotateX(8deg) rotateY(-8deg) scale(.92);
+    transform: rotateX(6deg) rotateY(0deg) scale(.96);
   }
 }
 .book {
-  animation: bookEnter 1.6s var(--ease-soft) .2s backwards;
+  animation: bookEnter 1.5s var(--ease-soft) .2s backwards;
 }
 
 /* idle subtle float */
 @keyframes bookFloat {
-  0%,100% { transform: rotateX(8deg) rotateY(-8deg) scale(.92) translateY(0); }
-  50%     { transform: rotateX(8deg) rotateY(-8deg) scale(.92) translateY(-6px); }
+  0%,100% { transform: rotateX(6deg) rotateY(0deg) scale(.96) translateY(0); }
+  50%     { transform: rotateX(6deg) rotateY(0deg) scale(.96) translateY(-5px); }
 }
 .book:not(.is-open) {
-  animation: bookEnter 1.6s var(--ease-soft) .2s backwards,
+  animation: bookEnter 1.5s var(--ease-soft) .2s backwards,
              bookFloat 6s ease-in-out 2s infinite;
+}
+
+/* =========================================================
+   MOBILE FALLBACK — single page mode below 900px
+   ========================================================= */
+@media (max-width: 900px) {
+  :root {
+    --book-w: min(94vw, 560px);
+    --page-w: var(--book-w);
+    --book-h: min(calc(100vh - 90px), 760px);
+  }
+  .book { transform: none; animation: bookEnter 1.5s var(--ease-soft) .2s backwards; }
+  .book.is-open { transform: none; }
+  .book__endpaper { display: none; }
+  .book__right-base { display: none; }
+  .book__spine { display: none; }
+  .book__edge--bottom, .book__edge--right { opacity: .5; }
+
+  .page {
+    left: 0;
+    width: 100%;
+  }
+  .page__face--back {
+    border-radius: 2px 6px 6px 2px;
+    box-shadow:
+      inset 8px 0 18px -10px rgba(0,0,0,.35),
+      2px 2px 14px rgba(0,0,0,.18);
+  }
 }

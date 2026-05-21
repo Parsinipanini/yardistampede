@@ -10,19 +10,21 @@
   const TOTAL_PAGES = 4;             // 4 content pages + 1 cover
   const FLIP_DURATION = 1.05;        // seconds
   const FLIP_COMMIT_THRESHOLD = 0.4; // 40% of page width = commit
-  const DRAG_FRICTION = 1.2;         // higher = more drag needed to flip
+  const DRAG_FRICTION = 1.0;         // higher = more drag needed to flip
+  const RIFFLE_PER_PAGE = 0.42;      // duration of each flip in the riffle
 
-  const book        = $('#book');
-  const stage       = $('#stage');
-  const loader      = $('#loader');
-  const coverOpen   = $('#coverOpen');
-  const navPrev     = $('#navPrev');
-  const navNext     = $('#navNext');
-  const soundToggle = $('#soundToggle');
-  const hint        = $('#hint');
-  const pageNow     = $('#pageNow');
-  const pageTotal   = $('#pageTotal');
-  const pages       = $$('.page', book).sort(
+  const book          = $('#book');
+  const stage         = $('#stage');
+  const loader        = $('#loader');
+  const coverOpen     = $('#coverOpen');
+  const navPrev       = $('#navPrev');
+  const navNext       = $('#navNext');
+  const soundToggle   = $('#soundToggle');
+  const hint          = $('#hint');
+  const pageNow       = $('#pageNow');
+  const pageTotal     = $('#pageTotal');
+  const rsvpShortcut  = $('#rsvpShortcut');
+  const pages         = $$('.page', book).sort(
     (a, b) => Number(a.dataset.page) - Number(b.dataset.page)
   );
 
@@ -112,6 +114,9 @@
     pageNow.textContent = pageLabels[current] || `Page ${current}`;
     navPrev.disabled = current <= 0;
     navNext.disabled = current >= TOTAL_PAGES;
+    if (rsvpShortcut) {
+      rsvpShortcut.classList.toggle('is-hidden', current >= TOTAL_PAGES);
+    }
   };
 
   /* =========================================================
@@ -254,7 +259,8 @@
       dragging = true;
       startX = e.clientX;
       startTime = performance.now();
-      bookWidth = book.getBoundingClientRect().width;
+      // drag math uses PAGE width (each leaf is half the book width)
+      bookWidth = targetPage.getBoundingClientRect().width;
       pointerId = e.pointerId;
       corner.setPointerCapture(pointerId);
       corner.dataset.dragged = 'false';
@@ -362,6 +368,57 @@
   $$('.page__corner').forEach(setupDrag);
 
   /* =========================================================
+     RIFFLE TO PAGE — quick stack-flip to a target page
+     ========================================================= */
+  const riffleToPage = (target) => {
+    target = Math.max(0, Math.min(TOTAL_PAGES, target));
+    if (isAnimating || target === current) return;
+    isAnimating = true;
+    book.classList.add('is-animating');
+    if (!hasOpened) { book.classList.add('is-open'); hasOpened = true; }
+
+    const forward = target > current;
+    const tl = gsap.timeline({
+      onComplete: () => {
+        book.classList.remove('is-animating');
+        isAnimating = false;
+        updateIndicator();
+      }
+    });
+
+    const stepFlip = (page, dir) => {
+      const endAngle = dir > 0 ? -180 : 0;
+      tl.to(page, {
+        rotateY: endAngle,
+        duration: RIFFLE_PER_PAGE,
+        ease: 'power2.in',
+        onStart: () => {
+          page.classList.add('is-flipping');
+          playPageTurn();
+        },
+        onComplete: () => {
+          if (dir > 0) page.classList.add('is-flipped');
+          else page.classList.remove('is-flipped');
+          page.classList.remove('is-flipping');
+          gsap.set(page, { clearProps: 'transform' });
+          current += dir;
+          updateIndicator();
+        }
+      }, '>-0.18');  // overlap each flip slightly for a "riffle" feel
+    };
+
+    if (forward) {
+      for (let p = current; p < target; p++) stepFlip(pages[p], +1);
+    } else {
+      for (let p = current - 1; p >= target; p--) stepFlip(pages[p], -1);
+    }
+  };
+
+  rsvpShortcut?.addEventListener('click', () => {
+    riffleToPage(TOTAL_PAGES);
+  });
+
+  /* =========================================================
      MOUSE-PARALLAX on the scene & subtle book tilt
      ========================================================= */
   const scene = $('.scene');
@@ -413,27 +470,31 @@
   });
 
   // Galloping horses — continuous stampede across the viewport in three depth layers.
+  const sweepW = window.innerWidth + 500;
   gsap.utils.toArray('.horse').forEach((horse) => {
     const isFar  = horse.classList.contains('horse--far');
     const isNear = horse.classList.contains('horse--near');
 
     // Depth dictates speed: near horses sweep fast, far horses crawl
-    const baseDur = isFar ? 38 : isNear ? 18 : 26;
-    const duration = baseDur + (Math.random() * 6);
-    const bobAmount = isNear ? 12 : isFar ? 4 : 8;
+    const baseDur = isFar ? 36 : isNear ? 16 : 24;
+    const duration = baseDur + (Math.random() * 8);
+    const bobAmount = isNear ? 14 : isFar ? 3 : 8;
+
+    // Per-horse size + vertical-offset variety
+    const sizeVariance = 0.85 + Math.random() * 0.3; // 0.85x to 1.15x
+    const yOffset = (Math.random() - 0.5) * (isFar ? 8 : isNear ? 20 : 14);
 
     // Vertical bob (gallop bounce)
     gsap.to(horse, {
       y: '-=' + bobAmount,
-      duration: 0.26 + Math.random() * 0.1,
+      duration: 0.22 + Math.random() * 0.12,
       yoyo: true,
       repeat: -1,
       ease: 'sine.inOut'
     });
 
     // Continuous left-to-right sweep, distributed randomly through the loop
-    const sweepW = window.innerWidth + 400;
-    gsap.set(horse, { left: 0, x: -300 });
+    gsap.set(horse, { left: 0, x: -400, y: yOffset, scale: sizeVariance, transformOrigin: '50% 100%' });
     const tween = gsap.to(horse, {
       x: sweepW,
       duration,

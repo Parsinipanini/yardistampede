@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Crimson+Pro:ital,wght@0,400;0,500;1,400&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Sacramento&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/book.css" />
@@ -40,24 +40,35 @@
       <path d="M0,220 L0,150 C140,120 260,160 420,140 C580,120 700,170 880,150 C1060,130 1200,180 1380,160 L1600,150 L1600,220 Z" fill="#731a1e" />
     </svg>
 
-    <!-- Stampede: three layers of horses for depth -->
+    <!-- Stampede: three layers of horses for depth (~25 total) -->
     <div class="stampede stampede--far" aria-hidden="true">
-      <img src="assets/Hourse.svg" class="horse horse--far horse--f1" alt="" />
-      <img src="assets/Hourse.svg" class="horse horse--far horse--f2" alt="" />
-      <img src="assets/Hourse.svg" class="horse horse--far horse--f3" alt="" />
-      <img src="assets/Hourse.svg" class="horse horse--far horse--f4" alt="" />
-      <img src="assets/Hourse.svg" class="horse horse--far horse--f5" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--far" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--far" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--far" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--far" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--far" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--far" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--far" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--far" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--far" alt="" />
     </div>
     <div class="stampede stampede--mid" aria-hidden="true">
-      <img src="assets/Hourse.svg" class="horse horse--mid horse--m1" alt="" />
-      <img src="assets/Hourse.svg" class="horse horse--mid horse--m2" alt="" />
-      <img src="assets/Hourse.svg" class="horse horse--mid horse--m3" alt="" />
-      <img src="assets/Hourse.svg" class="horse horse--mid horse--m4" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--mid" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--mid" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--mid" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--mid" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--mid" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--mid" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--mid" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--mid" alt="" />
     </div>
     <div class="stampede stampede--near" aria-hidden="true">
-      <img src="assets/Hourse.svg" class="horse horse--near horse--n1" alt="" />
-      <img src="assets/Hourse.svg" class="horse horse--near horse--n2" alt="" />
-      <img src="assets/Hourse.svg" class="horse horse--near horse--n3" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--near" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--near" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--near" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--near" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--near" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--near" alt="" />
     </div>
 
     <!-- Cowboys, smaller, drifting on the hills -->
@@ -114,6 +125,35 @@
       <!-- shadow under the book -->
       <div class="book__shadow"></div>
 
+      <!-- Left static page (endpaper) — visible before any flip, sits below all leaves -->
+      <div class="book__endpaper" aria-hidden="true">
+        <div class="endpaper__inner">
+          <div class="endpaper__crest">
+            <img src="https://www.yardi.com/wp-content/client-mu-plugins/cmw-icons/svg/logos/yardi_logo.svg" alt="" />
+          </div>
+          <div class="endpaper__ornament"></div>
+          <div class="endpaper__motto">An Invitation</div>
+          <div class="endpaper__subtitle">Calgary, July MMXXVI</div>
+          <img src="assets/Cowboy1.svg" alt="" class="endpaper__cutout" />
+        </div>
+      </div>
+
+      <!-- Right-side static paper base (visible when all leaves are flipped left) -->
+      <div class="book__right-base" aria-hidden="true">
+        <div class="back-cover">
+          <img src="https://www.yardi.com/wp-content/client-mu-plugins/cmw-icons/svg/logos/yardi_logo.svg" alt="" class="back-cover__logo" />
+          <div class="back-cover__line"></div>
+          <div class="back-cover__text">The greatest outdoor show on earth.</div>
+        </div>
+      </div>
+
+      <!-- Central spine -->
+      <div class="book__spine" aria-hidden="true"></div>
+
+      <!-- Page stack edge (bottom + right edges showing leaf thickness) -->
+      <div class="book__edge book__edge--bottom" aria-hidden="true"></div>
+      <div class="book__edge book__edge--right" aria-hidden="true"></div>
+
       <!-- ============================================================
            PAGE 0: COVER (closed book, video plays here)
            ============================================================ -->
@@ -130,16 +170,16 @@
           </div>
         </div>
         <div class="page__face page__face--back">
-          <div class="page-inner page-inner--inside-cover">
-            <div class="paper-cutout paper-cutout--center">
-              <img src="assets/Cowboy1.svg" alt="" />
-            </div>
-            <p class="dedication">
-              <span class="dedication__kicker">A note from Yardi</span>
-              For ten July days, the prairie wakes up. We&rsquo;d be honoured to share it with you.
+          <div class="left-page">
+            <div class="left-page__eyebrow">A note from Yardi</div>
+            <h3 class="left-page__title">Come west with us.</h3>
+            <div class="left-page__rule"></div>
+            <p class="left-page__body">
+              For ten July days the prairie wakes up. We would be honoured to share it with you.
               Dust on your boots, a chuckwagon thundering past, the sky the colour of a good whisky.
-              Turn the page.
             </p>
+            <div class="left-page__signoff">Yardi</div>
+            <img src="assets/Cowboy1.svg" alt="" class="left-page__cutout left-page__cutout--bl" />
           </div>
         </div>
         <div class="page__corner page__corner--br" data-direction="next" aria-hidden="true"></div>
@@ -204,7 +244,16 @@
           </div>
         </div>
         <div class="page__face page__face--back">
-          <div class="page-inner page-inner--back"></div>
+          <div class="left-page">
+            <div class="left-page__eyebrow">Chapter Two</div>
+            <h3 class="left-page__title">The days ahead.</h3>
+            <div class="left-page__rule"></div>
+            <p class="left-page__body">
+              We have gathered our favourite moments into a handful of evenings, mornings, and one very loud afternoon.
+              Read on for the order of things.
+            </p>
+            <img src="assets/Cowboy2.svg" alt="" class="left-page__cutout left-page__cutout--br" />
+          </div>
         </div>
         <div class="page__corner page__corner--br" data-direction="next" aria-hidden="true"></div>
         <div class="page__corner page__corner--bl" data-direction="prev" aria-hidden="true"></div>
@@ -263,7 +312,16 @@
           </div>
         </div>
         <div class="page__face page__face--back">
-          <div class="page-inner page-inner--back"></div>
+          <div class="left-page">
+            <div class="left-page__eyebrow">A bit of context</div>
+            <h3 class="left-page__title">Since nineteen-twelve.</h3>
+            <div class="left-page__rule"></div>
+            <p class="left-page__body">
+              Every July, Calgary closes its office doors, dusts off its boots, and remembers what kind of country it lives in.
+              Here is a brief account of what awaits you.
+            </p>
+            <img src="assets/Hourse.svg" alt="" class="left-page__cutout left-page__cutout--br left-page__cutout--horse" />
+          </div>
         </div>
         <div class="page__corner page__corner--br" data-direction="next" aria-hidden="true"></div>
         <div class="page__corner page__corner--bl" data-direction="prev" aria-hidden="true"></div>
@@ -335,7 +393,17 @@
           </div>
         </div>
         <div class="page__face page__face--back">
-          <div class="page-inner page-inner--back"></div>
+          <div class="left-page">
+            <div class="left-page__eyebrow">One last thing</div>
+            <h3 class="left-page__title">Will you join us?</h3>
+            <div class="left-page__rule"></div>
+            <p class="left-page__body">
+              Send us your reply, and we will send the rest: hotel keys, the order of the days, the name of your host.
+              Boots are encouraged but never required.
+            </p>
+            <div class="left-page__signoff">See you in Calgary</div>
+            <img src="assets/Cloud1.svg" alt="" class="left-page__cutout left-page__cutout--tr left-page__cutout--cloud" />
+          </div>
         </div>
         <div class="page__corner page__corner--br" data-direction="next" aria-hidden="true"></div>
         <div class="page__corner page__corner--bl" data-direction="prev" aria-hidden="true"></div>
@@ -425,7 +493,15 @@
           </div>
         </div>
         <div class="page__face page__face--back">
-          <div class="page-inner page-inner--back"></div>
+          <div class="left-page left-page--final">
+            <div class="left-page__eyebrow">Until July</div>
+            <h3 class="left-page__title">Thank you.</h3>
+            <div class="left-page__rule"></div>
+            <p class="left-page__body">
+              We will be in touch with the next chapter. Travel safely, pack a hat, and we will meet you under the big sky.
+            </p>
+            <div class="left-page__signoff">The Yardi Team</div>
+          </div>
         </div>
         <div class="page__corner page__corner--bl" data-direction="prev" aria-hidden="true"></div>
       </article>
@@ -438,6 +514,15 @@
     </button>
     <button class="nav nav--next" id="navNext" type="button" aria-label="Next page">
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
+    <!-- Quick-RSVP shortcut -->
+    <button class="rsvp-shortcut" id="rsvpShortcut" type="button" aria-label="Skip to RSVP">
+      <span class="rsvp-shortcut__label">RSVP</span>
+      <span class="rsvp-shortcut__sub">Save your seat</span>
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+        <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </button>
 
     <div class="hint" id="hint">
