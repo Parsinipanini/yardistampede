@@ -260,7 +260,8 @@ input, select, textarea, button { font-family: inherit; }
   opacity: .95;
 }
 
-.topbar__pageno {
+.topbar__pageno { display: none; }
+.topbar__pageno--unused {
   font-family: var(--ff-accent);
   color: var(--c-cream);
   letter-spacing: .18em;
@@ -610,6 +611,37 @@ input, select, textarea, button { font-family: inherit; }
   object-fit: cover;
   transform: scale(0.93);
   transform-origin: center center;
+  pointer-events: none;
+}
+
+/* date overlay on cover */
+.cover__date {
+  position: absolute;
+  left: 50%;
+  bottom: 76px;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  z-index: 3;
+  white-space: nowrap;
+}
+.cover__date-day {
+  font-family: var(--ff-accent);
+  font-size: 13px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--c-gold);
+  text-shadow: 0 1px 4px rgba(0,0,0,.8);
+  line-height: 1.5;
+}
+.cover__date-time {
+  font-family: var(--ff-accent);
+  font-size: 11px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: rgba(230,173,64,.75);
+  text-shadow: 0 1px 4px rgba(0,0,0,.8);
+  margin-top: 2px;
 }
 
 /* small floating button so the user knows it's interactive */
@@ -721,6 +753,16 @@ input, select, textarea, button { font-family: inherit; }
   color: var(--c-bark);
   opacity: .85;
   margin-top: 6px;
+}
+.invite__teaser {
+  font-family: var(--ff-accent);
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--c-burgundy);
+  opacity: .65;
+  margin-top: 12px;
 }
 
 /* =========================================================
@@ -985,11 +1027,16 @@ input, select, textarea, button { font-family: inherit; }
   .about__chip p { font-size: 13px; }
   .travel__rows { gap: 5px; }
   .travel__row { padding: 8px 12px; }
-  /* Agenda — tighten item padding to clear 14px overflow */
-  .agenda__item { padding: 9px 0; }
-  /* RSVP — reduce gap to clear 6px overflow */
+  /* Agenda */
+  .agenda__item { grid-template-columns: 120px 1fr; gap: 12px; padding: 7px 0; }
+  .agenda__body h3 { font-size: 16px; margin-bottom: 3px; }
+  .agenda__body p { font-size: 14px; line-height: 1.4; }
+  .agenda__time { font-size: 11px; }
+  /* Invitation teaser */
+  .invite__teaser { margin-top: 6px; }
+  /* RSVP */
   .rsvp { gap: 9px; }
-  .rsvp__lede { margin-bottom: 10px; }
+  .rsvp__lede { font-size: 14px; margin-bottom: 8px; }
 }
 
 /* Tablet portrait & smaller laptops — book uses more of the viewport,

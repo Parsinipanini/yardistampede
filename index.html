@@ -140,6 +140,10 @@
             <video class="cover__video" autoplay muted loop playsinline preload="auto" poster="">
               <source src="assets/hero.mp4" type="video/mp4" />
             </video>
+            <div class="cover__date" aria-hidden="true">
+              <div class="cover__date-day">Wednesday, July 8, 2026</div>
+              <div class="cover__date-time">12:00 pm &ndash; 4:30 pm</div>
+            </div>
             <button class="cover__open" id="coverOpen" type="button" aria-label="Open the book">
               <span>Open the Book</span>
               <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -170,20 +174,20 @@
 
               <div class="invite">
                 <p class="invite__lede">
-                  Yardi cordially invites you to join us under the big Alberta sky for
+                  Yardi cordially invites you to join us for an afternoon of rodeo, fine dining, and Western tradition at
                   <em>The Greatest Outdoor Show on Earth</em>.
                 </p>
 
                 <div class="invite__grid">
                   <div class="invite__cell">
                     <div class="invite__label">When</div>
-                    <div class="invite__value">July 3 &ndash; 12, 2026</div>
-                    <div class="invite__hint">Hospitality dates TBA</div>
+                    <div class="invite__value">Wednesday, July 8, 2026</div>
+                    <div class="invite__hint">12:00 pm &ndash; 4:30 pm</div>
                   </div>
                   <div class="invite__cell">
                     <div class="invite__label">Where</div>
-                    <div class="invite__value">Stampede Park</div>
-                    <div class="invite__hint">Calgary, Alberta, Canada</div>
+                    <div class="invite__value">Infield Suites, GMC Stadium</div>
+                    <div class="invite__hint">Private Suite #31</div>
                   </div>
                   <div class="invite__cell">
                     <div class="invite__label">Dress</div>
@@ -201,6 +205,7 @@
                   Cannot wait to see you there.
                   <span class="invite__signoff">The Yardi Team</span>
                 </div>
+                <p class="invite__teaser">Turn the page for your suite programme &rarr;</p>
               </div>
             </div>
           </div>
@@ -215,7 +220,7 @@
       <!-- ============================================================
            PAGE 2: AGENDA
            ============================================================ -->
-      <article class="page" data-page="2" aria-label="Agenda">
+      <article class="page" data-page="2" aria-label="Programme">
         <div class="page__face page__face--front">
           <div class="page-inner">
             <div class="page-paper">
@@ -230,31 +235,31 @@
 
               <ol class="agenda">
                 <li class="agenda__item">
-                  <div class="agenda__time">Day One <span>&middot;</span> Evening</div>
+                  <div class="agenda__time">12:00 pm <span>&middot;</span> Suite Opens</div>
                   <div class="agenda__body">
-                    <h3>Welcome Reception</h3>
-                    <p>Cocktails on the terrace as the parade rolls in. Meet your Yardi hosts and fellow guests beneath strings of paper lanterns.</p>
+                    <h3>Your Private Suite</h3>
+                    <p>Suite #31 opens at noon and remains open through the 4:30 pm Rodeo finale. Stay on at Stampede Park as long as you like afterward.</p>
                   </div>
                 </li>
                 <li class="agenda__item">
-                  <div class="agenda__time">Day Two <span>&middot;</span> Afternoon</div>
+                  <div class="agenda__time">All Afternoon <span>&middot;</span> Dining</div>
                   <div class="agenda__body">
-                    <h3>Rodeo &amp; Chuckwagons</h3>
-                    <p>Reserved suite seating for the championship rodeo and an evening at the Rangeland Derby. The thunder of the chuckwagons, up close.</p>
+                    <h3>Premium Dining &amp; Open Bar</h3>
+                    <p>Lunch is carved and flamb&eacute;ed in-suite by your dedicated attendant. Premium beverages available all afternoon &mdash; entirely on Yardi.</p>
                   </div>
                 </li>
                 <li class="agenda__item">
-                  <div class="agenda__time">Day Three <span>&middot;</span> Morning</div>
+                  <div class="agenda__time">Ringside <span>&middot;</span> Seat Deck</div>
                   <div class="agenda__body">
-                    <h3>Stampede Breakfast</h3>
-                    <p>A Western tradition: pancakes, bacon, fiddle music, and warm conversation before the day begins.</p>
+                    <h3>Private Outdoor Deck</h3>
+                    <p>A covered seat deck with in-seat beverage service, live event feed on suite screens, executive-level amenities, and a Cowboy Concierge at your side.</p>
                   </div>
                 </li>
                 <li class="agenda__item">
-                  <div class="agenda__time">Day Three <span>&middot;</span> Evening</div>
+                  <div class="agenda__time">The Venue</div>
                   <div class="agenda__body">
-                    <h3>Private Dinner &amp; Concert</h3>
-                    <p>A curated dinner followed by reserved seats at the Grandstand Show. Fireworks over the prairie to close the night.</p>
+                    <h3>About Infield Suites</h3>
+                    <p>Nestled in the Infield Grandstand, 36 open-air suites deliver an up-close view of every event, each with a private attendant and unmatched sightlines to the action.</p>
                   </div>
                 </li>
               </ol>
@@ -271,7 +276,7 @@
       <!-- ============================================================
            PAGE 3: ABOUT THE STAMPEDE + TRAVEL
            ============================================================ -->
-      <article class="page" data-page="3" aria-label="About &amp; travel">
+      <article class="page" data-page="3" aria-label="About the Stampede">
         <div class="page__face page__face--front">
           <div class="page-inner">
             <div class="page-paper">
@@ -280,7 +285,7 @@
 
               <header class="page-head">
                 <div class="page-head__eyebrow">Chapter Three</div>
-                <h2 class="page-head__title">About &amp; Travel</h2>
+                <h2 class="page-head__title">The Stampede</h2>
                 <div class="page-head__rule"></div>
               </header>
 
@@ -293,37 +298,19 @@
                 <div class="about__grid">
                   <div class="about__chip">
                     <div class="about__chip-title">Rodeo</div>
-                    <p>The world&rsquo;s richest outdoor rodeo. Bull riding, bronc, barrel racing.</p>
+                    <p>The world&rsquo;s richest outdoor rodeo &mdash; bull riding, bronc, and barrel racing at its finest.</p>
                   </div>
                   <div class="about__chip">
                     <div class="about__chip-title">Chuckwagons</div>
-                    <p>Heart-stopping Rangeland Derby races every night.</p>
+                    <p>Heart-stopping Rangeland Derby races with thundering wagons and tight turns.</p>
                   </div>
                   <div class="about__chip">
-                    <div class="about__chip-title">Music</div>
-                    <p>Stages across the park, from country anthems to headline pop.</p>
+                    <div class="about__chip-title">Midway &amp; Fair</div>
+                    <p>Western art, Indigenous powwow, and the legendary Midway full of entertainment.</p>
                   </div>
                   <div class="about__chip">
-                    <div class="about__chip-title">Heritage</div>
-                    <p>Indigenous powwow, Western art, and the Midway after dark.</p>
-                  </div>
-                </div>
-
-                <div class="travel">
-                  <h3 class="travel__title">Getting there</h3>
-                  <div class="travel__rows">
-                    <div class="travel__row">
-                      <div class="travel__k">Fly</div>
-                      <div class="travel__v">Calgary International (YYC), 20 min from Stampede Park.</div>
-                    </div>
-                    <div class="travel__row">
-                      <div class="travel__k">Stay</div>
-                      <div class="travel__v">Host hotel &amp; room block details to be shared with your RSVP confirmation.</div>
-                    </div>
-                    <div class="travel__row">
-                      <div class="travel__k">On site</div>
-                      <div class="travel__v">Private transfers between hotel and the park provided throughout the programme.</div>
-                    </div>
+                    <div class="about__chip-title">Fireworks</div>
+                    <p>Grand nightly fireworks over the Stampede grounds &mdash; a spectacular finale to the day.</p>
                   </div>
                 </div>
               </div>
@@ -353,7 +340,7 @@
                 <div class="page-head__rule"></div>
               </header>
 
-              <p class="rsvp__lede">Save your seat at the table. We&rsquo;ll follow up with your full itinerary.</p>
+              <p class="rsvp__lede">Reserve your seat at Private Suite #31. We look forward to seeing you on July 8.</p>
 
               <!-- Replace action with your Formspree endpoint, e.g. https://formspree.io/f/xxxxxxx -->
               <form class="rsvp" id="rsvpForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
@@ -377,21 +364,13 @@
                     <input type="text" name="company" autocomplete="organization" />
                   </label>
                 </div>
-                <div class="rsvp__row rsvp__row--two">
+                <div class="rsvp__row">
                   <label class="field">
                     <span class="field__label">Attending?</span>
                     <select name="attending" required>
                       <option value="">Choose&hellip;</option>
                       <option value="yes">Yes, with bells on</option>
-                      <option value="maybe">Tentative</option>
                       <option value="no">Regretfully declining</option>
-                    </select>
-                  </label>
-                  <label class="field">
-                    <span class="field__label">Bringing a guest?</span>
-                    <select name="guest">
-                      <option value="no">No</option>
-                      <option value="yes">Yes, with a guest</option>
                     </select>
                   </label>
                 </div>
@@ -405,13 +384,13 @@
                     <span>Send my RSVP</span>
                     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   </button>
-                  <div class="rsvp__fineprint">Replies go to your Yardi host. Hospitality is by invitation.</div>
+                  <div class="rsvp__fineprint">You&rsquo;ll receive a confirmation email within 24 hours. Hospitality is by invitation.</div>
                 </div>
 
                 <div class="rsvp__success" id="rsvpSuccess" hidden>
                   <div class="rsvp__success-mark">&#10003;</div>
                   <h3>See you in Calgary.</h3>
-                  <p>Thank you. We&rsquo;ll be in touch shortly with the next chapter.</p>
+                  <p>Thank you &mdash; a confirmation email is on its way within 24 hours.</p>
                 </div>
               </form>
             </div>
