@@ -137,7 +137,7 @@
   inset: 0;
   transform-origin: left center;
   transform-style: preserve-3d;
-  transition: transform 1.05s var(--ease-paper);
+  transition: transform 1.05s var(--ease-paper), width 0.6s var(--ease-soft);
   will-change: transform;
   border-radius: 2px 6px 6px 2px;
 }
@@ -190,7 +190,7 @@
 
 /* Cover gets a hard-cover look — no aging overlay on the video */
 .page--cover .page__face--front {
-  background: linear-gradient(135deg, #2a1a13, #56342b);
+  background: #0f0805;
   box-shadow:
     inset 10px 0 24px -10px rgba(0,0,0,.7),
     4px 2px 24px rgba(0,0,0,.6);
@@ -217,15 +217,16 @@
   pointer-events: none;
 }
 
-/* z-index stacking + right-edge peek so unflipped pages stair-step
-   past the cover, indicating how many remain. When a page flips
-   (-180deg around its left edge) the right peek naturally mirrors
-   to the left side, growing the left stack as pages get flipped. */
+/* z-index stacking. Page peeks are hidden while the cover is closed
+   and animate in as soon as the book opens (is-open class added by JS). */
 .page[data-page="0"] { z-index: 50; }
-.page[data-page="1"] { z-index: 40; right: calc(var(--page-peek) * -1); }
-.page[data-page="2"] { z-index: 30; right: calc(var(--page-peek) * -2); }
-.page[data-page="3"] { z-index: 20; right: calc(var(--page-peek) * -3); }
-.page[data-page="4"] { z-index: 10; right: calc(var(--page-peek) * -4); }
+.page[data-page="1"] { z-index: 40; }
+.page[data-page="2"] { z-index: 30; }
+.page[data-page="3"] { z-index: 20; }
+.page[data-page="4"] { z-index: 10; }
+
+/* Page peek stair-step is applied via JS inline styles when the book opens,
+   so flipped pages (rotated to the left) don't carry a right offset. */
 
 .page.is-flipped { transform: rotateY(-180deg); }
 .page.is-flipping { z-index: 99 !important; }

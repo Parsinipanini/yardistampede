@@ -91,12 +91,30 @@
   };
 
   /* =========================================================
+     PAGE PEEK — stair-step applied once via inline style so it
+     overrides inset:0 regardless of the CSS cascade.
+     Flipped pages rotate to the LEFT, making their right-side
+     peek invisible — so the count naturally decreases as you read.
+     ========================================================= */
+  const applyPagePeek = () => {
+    // inset:0 fixes the right edge, so we must widen the element instead.
+    // right:auto releases the right constraint; width expands into the freed space.
+    pages.forEach((page, i) => {
+      if (i >= 1) {
+        page.style.right = 'auto';
+        page.style.width = `calc(100% + ${i} * var(--page-peek))`;
+      }
+    });
+  };
+
+  /* =========================================================
      OPEN THE BOOK (cover → page 1)
      ========================================================= */
   const openBook = () => {
     if (hasOpened) return;
     hasOpened = true;
     book.classList.add('is-open');
+    applyPagePeek();
     // Small delay so the book has time to flatten before the page flips
     setTimeout(() => flipForward(), 600);
     // Fade out the hint after first interaction
@@ -355,7 +373,7 @@
     if (isAnimating || target === current) return;
     isAnimating = true;
     book.classList.add('is-animating');
-    if (!hasOpened) { book.classList.add('is-open'); hasOpened = true; }
+    if (!hasOpened) { book.classList.add('is-open'); hasOpened = true; applyPagePeek(); }
 
     const forward = target > current;
     const tl = gsap.timeline({
@@ -425,6 +443,7 @@
     if (!hasOpened) {
       hasOpened = true;
       book.classList.add('is-open');
+      applyPagePeek();
     }
     book.classList.remove('is-animating');
     isAnimating = false;
