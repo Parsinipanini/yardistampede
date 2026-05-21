@@ -154,9 +154,9 @@ input, select, textarea, button { font-family: inherit; }
   width: 100%;
   pointer-events: none;
 }
-.stampede--far  { bottom: 27%; height: 8%;  z-index: 1; }
-.stampede--mid  { bottom: 13%; height: 13%; z-index: 2; }
-.stampede--near { bottom: 2%;  height: 18%; z-index: 3; }
+.stampede--far  { bottom: 27%; height: 5.6%;  z-index: 1; }
+.stampede--mid  { bottom: 13%; height: 9.1%;  z-index: 2; }
+.stampede--near { bottom: 2%;  height: 12.6%; z-index: 3; }
 
 .horse {
   position: absolute;
