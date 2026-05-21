@@ -228,29 +228,15 @@
   });
 
   /* =========================================================
-     MOUSE WHEEL — scroll within page first; flip at boundary
+     MOUSE WHEEL — scroll page content only, never flip pages
      ========================================================= */
-  let wheelCooldown = false;
   window.addEventListener('wheel', (e) => {
     const paper = e.target.closest('.page-paper');
-    if (paper) {
-      const maxScroll = paper.scrollHeight - paper.clientHeight;
-      if (maxScroll > 0) {
-        // Drive scroll manually — browser native scroll can misfire inside
-        // preserve-3d transform contexts; preventDefault prevents double-scroll.
-        paper.scrollTop = Math.max(0, Math.min(maxScroll, paper.scrollTop + e.deltaY));
-        e.preventDefault();
-        const atBottom = paper.scrollTop >= maxScroll - 2;
-        const atTop    = paper.scrollTop <= 0;
-        if (e.deltaY > 0 && !atBottom) return;
-        if (e.deltaY < 0 && !atTop)    return;
-      }
-    }
-    if (wheelCooldown || isAnimating) return;
-    wheelCooldown = true;
-    setTimeout(() => { wheelCooldown = false; }, 900);
-    if (e.deltaY > 0) flipForward();
-    else if (e.deltaY < 0) flipBackward();
+    if (!paper) return;
+    const maxScroll = paper.scrollHeight - paper.clientHeight;
+    if (maxScroll <= 0) return;
+    paper.scrollTop = Math.max(0, Math.min(maxScroll, paper.scrollTop + e.deltaY));
+    e.preventDefault();
   }, { passive: false });
 
   /* =========================================================
