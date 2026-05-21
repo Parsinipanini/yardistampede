@@ -971,6 +971,20 @@ input, select, textarea, button { font-family: inherit; }
    breakpoint so the layout reads naturally on every device.
    ========================================================= */
 
+/* 1280-px laptop range — viewport height is constrained (~610px book),
+   so trim padding and font caps to prevent content overflow. */
+@media (max-width: 1366px) {
+  .page-paper { padding: 22px 30px 24px; }
+  .page-head { margin-bottom: 10px; }
+  .page-head__title { font-size: clamp(28px, 3.5vw, 44px); }
+  .about__lede { font-size: 15px; margin-bottom: 10px; }
+  .about__grid { gap: 10px; margin-bottom: 10px; }
+  .about__chip { padding: 9px 12px; }
+  .about__chip p { font-size: 13px; }
+  .travel__rows { gap: 5px; }
+  .travel__row { padding: 8px 12px; }
+}
+
 /* Tablet portrait & smaller laptops — book uses more of the viewport,
    hardcover overhang shrinks a touch so it doesn't overwhelm. */
 @media (max-width: 1024px) {
