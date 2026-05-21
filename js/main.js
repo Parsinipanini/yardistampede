@@ -412,29 +412,35 @@
     );
   });
 
-  // Galloping horses (bob up and down + sweep across periodically)
-  gsap.utils.toArray('.horse').forEach((horse, i) => {
+  // Galloping horses — continuous stampede across the viewport in three depth layers.
+  gsap.utils.toArray('.horse').forEach((horse) => {
+    const isFar  = horse.classList.contains('horse--far');
+    const isNear = horse.classList.contains('horse--near');
+
+    // Depth dictates speed: near horses sweep fast, far horses crawl
+    const baseDur = isFar ? 38 : isNear ? 18 : 26;
+    const duration = baseDur + (Math.random() * 6);
+    const bobAmount = isNear ? 12 : isFar ? 4 : 8;
+
+    // Vertical bob (gallop bounce)
     gsap.to(horse, {
-      y: '-=8',
-      duration: 0.32 + (i * 0.04),
+      y: '-=' + bobAmount,
+      duration: 0.26 + Math.random() * 0.1,
       yoyo: true,
       repeat: -1,
       ease: 'sine.inOut'
     });
 
-    // Periodic stampede sweep — every ~35s a fresh horse runs across
-    const startX = -200 - (i * 60);
-    gsap.fromTo(horse,
-      { x: startX },
-      {
-        x: window.innerWidth + 200,
-        duration: 14 + (i * 0.8),
-        repeat: -1,
-        ease: 'none',
-        delay: 3 + (i * 2.5),
-        repeatDelay: 18 + (i * 4)
-      }
-    );
+    // Continuous left-to-right sweep, distributed randomly through the loop
+    const sweepW = window.innerWidth + 400;
+    gsap.set(horse, { left: 0, x: -300 });
+    const tween = gsap.to(horse, {
+      x: sweepW,
+      duration,
+      repeat: -1,
+      ease: 'none'
+    });
+    tween.progress(Math.random());
   });
 
   // Cowboys gently sway
@@ -476,11 +482,11 @@
         });
         if (res.ok) showSuccess();
         else {
-          alert('Sorry — we could not send your RSVP. Please email your Yardi host directly.');
+          alert('Sorry, we could not send your RSVP. Please email your Yardi host directly.');
           if (submitBtn) submitBtn.disabled = false;
         }
       } catch (_) {
-        alert('Sorry — we could not send your RSVP. Please email your Yardi host directly.');
+        alert('Sorry, we could not send your RSVP. Please email your Yardi host directly.');
         if (submitBtn) submitBtn.disabled = false;
       }
     });
