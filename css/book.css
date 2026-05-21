@@ -59,26 +59,9 @@
   pointer-events: none;
 }
 
-/* page-stack cut edge — paper-coloured vertical stripes on the right,
-   reads as the visible edges of all the pages in the book */
-.book__back::before {
-  content: "";
-  position: absolute;
-  top: 10px;
-  bottom: 10px;
-  right: 6px;
-  width: var(--cover-stack-w);
-  background: repeating-linear-gradient(
-    0deg,
-    #ecdcb9 0 1px, #b89870 1px 2px,
-    #d9c39a 2px 3px, #c9b58a 3px 4px);
-  border-radius: 1px;
-  box-shadow:
-    inset 0 0 3px rgba(0,0,0,.35),
-    inset -1px 0 0 rgba(0,0,0,.3),
-    inset 1px 0 0 rgba(0,0,0,.15),
-    0 0 0 1px rgba(40,20,10,.5);
-}
+/* page-stack cut edge — suppressed; the real pages now stair-step
+   past the cover via --page-peek to indicate remaining pages */
+.book__back::before { content: none; }
 
 /* =========================================================
    LEFT HARDCOVER — mirror of book__back, sits behind the
@@ -116,26 +99,9 @@
 }
 .book.is-spread .book__back--left { opacity: 1; }
 
-/* page-stack cut edge on the OUTER left of the left back */
-.book__back--left::before {
-  content: "";
-  position: absolute;
-  top: 10px;
-  bottom: 10px;
-  left: 6px;
-  right: auto;
-  width: var(--cover-stack-w);
-  background: repeating-linear-gradient(
-    0deg,
-    #ecdcb9 0 1px, #b89870 1px 2px,
-    #d9c39a 2px 3px, #c9b58a 3px 4px);
-  border-radius: 1px;
-  box-shadow:
-    inset 0 0 3px rgba(0,0,0,.35),
-    inset 1px 0 0 rgba(0,0,0,.3),
-    inset -1px 0 0 rgba(0,0,0,.15),
-    0 0 0 1px rgba(40,20,10,.5);
-}
+/* page-stack cut edge on the OUTER left — suppressed; flipped pages
+   themselves now stair-step past the left hardcover edge */
+.book__back--left::before { content: none; }
 /* suppress the duplicate spine — only the right back carries the centerline spine */
 .book__back--left::after { content: none; }
 
@@ -251,12 +217,15 @@
   pointer-events: none;
 }
 
-/* z-index stacking */
+/* z-index stacking + right-edge peek so unflipped pages stair-step
+   past the cover, indicating how many remain. When a page flips
+   (-180deg around its left edge) the right peek naturally mirrors
+   to the left side, growing the left stack as pages get flipped. */
 .page[data-page="0"] { z-index: 50; }
-.page[data-page="1"] { z-index: 40; }
-.page[data-page="2"] { z-index: 30; }
-.page[data-page="3"] { z-index: 20; }
-.page[data-page="4"] { z-index: 10; }
+.page[data-page="1"] { z-index: 40; right: calc(var(--page-peek) * -1); }
+.page[data-page="2"] { z-index: 30; right: calc(var(--page-peek) * -2); }
+.page[data-page="3"] { z-index: 20; right: calc(var(--page-peek) * -3); }
+.page[data-page="4"] { z-index: 10; right: calc(var(--page-peek) * -4); }
 
 .page.is-flipped { transform: rotateY(-180deg); }
 .page.is-flipping { z-index: 99 !important; }
