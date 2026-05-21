@@ -63,6 +63,43 @@
     -2px 2px 14px rgba(0,0,0,.18);
 }
 
+/* aged edges — sepia vignette + foxing spots on every page face */
+.page__face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    /* tea-stain blots — large soft brown patches */
+    radial-gradient(ellipse 220px 140px at 8% 12%,  rgba(110,60,28,.18), transparent 70%),
+    radial-gradient(ellipse 180px 120px at 92% 88%, rgba(120,55,25,.16), transparent 70%),
+    radial-gradient(ellipse 140px 100px at 78% 22%, rgba(90,45,20,.10),  transparent 70%),
+    /* coffee ring */
+    radial-gradient(circle 60px at 18% 78%,
+      transparent 0,
+      transparent 38px,
+      rgba(110,60,28,.22) 40px,
+      rgba(110,60,28,.10) 46px,
+      transparent 52px),
+    /* foxing dots — tiny sepia specks scattered around */
+    radial-gradient(circle 2px at 28% 36%, rgba(86,40,18,.4)  0, transparent 100%),
+    radial-gradient(circle 3px at 64% 18%, rgba(86,40,18,.35) 0, transparent 100%),
+    radial-gradient(circle 2px at 45% 62%, rgba(86,40,18,.3)  0, transparent 100%),
+    radial-gradient(circle 4px at 82% 54%, rgba(86,40,18,.28) 0, transparent 100%),
+    radial-gradient(circle 2px at 12% 48%, rgba(86,40,18,.32) 0, transparent 100%),
+    radial-gradient(circle 3px at 38% 84%, rgba(86,40,18,.28) 0, transparent 100%),
+    radial-gradient(circle 2px at 72% 72%, rgba(86,40,18,.34) 0, transparent 100%),
+    radial-gradient(circle 3px at 22% 22%, rgba(86,40,18,.3)  0, transparent 100%),
+    /* burnt / aged outer rim */
+    radial-gradient(ellipse 130% 110% at 50% 50%,
+      transparent 60%,
+      rgba(86,40,18,.18) 82%,
+      rgba(50,22,10,.42) 100%);
+  mix-blend-mode: multiply;
+  z-index: 4;
+}
+
 /* Page back (plain paper, briefly visible during flip) */
 .page-back {
   position: absolute;
@@ -81,12 +118,33 @@
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
-/* Cover gets a hard-cover look */
+/* Cover gets a hard-cover look — no aging overlay on the video */
 .page--cover .page__face--front {
   background: linear-gradient(135deg, #2a1a13, #56342b);
   box-shadow:
     inset 10px 0 24px -10px rgba(0,0,0,.7),
     4px 2px 24px rgba(0,0,0,.6);
+}
+.page--cover .page__face--front::after { content: none; }
+
+/* leather-strap accent down the spine of the cover */
+.page--cover .page__face--front::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 26px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.18)),
+    repeating-linear-gradient(0deg,
+      #3a1f12 0, #3a1f12 4px,
+      #2a160d 4px, #2a160d 8px),
+    #2a160d;
+  border-right: 1px solid rgba(0,0,0,.4);
+  box-shadow: inset -2px 0 4px rgba(0,0,0,.5), inset 2px 0 0 rgba(230,173,64,.08);
+  z-index: 4;
+  pointer-events: none;
 }
 
 /* z-index stacking */

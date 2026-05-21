@@ -336,68 +336,63 @@ input, select, textarea, button { font-family: inherit; }
 
 /* =========================================================
    QUICK-RSVP SHORTCUT (floating bottom-right)
+   Leather-tag look — sits above the book on every page.
    ========================================================= */
 .rsvp-shortcut {
   position: fixed;
   bottom: 28px;
   right: 28px;
-  z-index: 45;
+  z-index: 60;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 18px 12px 22px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, var(--c-burgundy), #5c1518);
-  color: var(--c-cream);
+  gap: 12px;
+  padding: 11px 18px 11px 20px;
+  border-radius: 6px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.06)),
+    linear-gradient(135deg, #6a3a23, #4a2516);
+  color: #f5e6c8;
   font-family: var(--ff-accent);
   font-size: 12px;
-  letter-spacing: .25em;
+  letter-spacing: .18em;
   text-transform: uppercase;
+  border: 1px solid rgba(230,173,64,.5);
   box-shadow:
-    0 12px 28px rgba(0,0,0,.55),
-    0 0 0 1px rgba(230,173,64,.35),
-    inset 0 -2px 0 rgba(0,0,0,.3);
-  transition: transform .25s var(--ease-soft), box-shadow .25s var(--ease-soft), background .25s ease;
-}
-.rsvp-shortcut::before {
-  content: "";
-  position: absolute;
-  inset: -3px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, rgba(230,173,64,.6), rgba(230,173,64,0));
-  z-index: -1;
-  opacity: .6;
-  filter: blur(8px);
-  transition: opacity .25s ease;
+    0 8px 18px rgba(0,0,0,.4),
+    inset 0 1px 0 rgba(255,232,180,.18),
+    inset 0 -1px 0 rgba(0,0,0,.25);
+  text-shadow: 0 1px 0 rgba(0,0,0,.4);
+  transition: transform .25s var(--ease-soft), box-shadow .25s var(--ease-soft), background .25s ease, border-color .25s ease;
 }
 .rsvp-shortcut:hover {
-  transform: translateY(-3px);
-  background: linear-gradient(135deg, var(--c-ember), var(--c-burgundy));
+  transform: translateY(-2px);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.04)),
+    linear-gradient(135deg, #7d4528, #582c19);
+  border-color: rgba(230,173,64,.85);
   box-shadow:
-    0 16px 32px rgba(190,54,39,.5),
-    0 0 0 1px rgba(230,173,64,.55),
-    inset 0 -2px 0 rgba(0,0,0,.3);
+    0 12px 22px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,232,180,.25),
+    inset 0 -1px 0 rgba(0,0,0,.25);
 }
-.rsvp-shortcut:hover::before { opacity: 1; }
-.rsvp-shortcut svg { transition: transform .25s var(--ease-soft); }
-.rsvp-shortcut:hover svg { transform: translateX(4px); }
+.rsvp-shortcut svg { transition: transform .25s var(--ease-soft); color: var(--c-gold); }
+.rsvp-shortcut:hover svg { transform: translateX(3px); }
 
 .rsvp-shortcut__label {
   font-family: var(--ff-display);
   font-weight: 400;
-  font-size: 15px;
-  letter-spacing: .12em;
+  font-size: 16px;
+  letter-spacing: .08em;
   line-height: 1;
   text-transform: uppercase;
+  color: var(--c-gold);
 }
 .rsvp-shortcut__sub {
   font-family: var(--ff-accent);
   font-size: 10px;
-  letter-spacing: .2em;
-  color: var(--c-gold);
-  opacity: .85;
-  margin-left: -2px;
-  margin-right: 4px;
+  letter-spacing: .18em;
+  color: #e8d4a8;
+  opacity: .9;
   line-height: 1;
   text-transform: uppercase;
 }

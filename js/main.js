@@ -55,47 +55,103 @@
     return audioCtx;
   };
 
+  // Pink-noise buffer (1/f) — more "paper" than white noise
+  const makeNoiseBuffer = (ctx, durationSec, pink = true) => {
+    const len = Math.floor(ctx.sampleRate * durationSec);
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+    for (let i = 0; i < len; i++) {
+      const w = Math.random() * 2 - 1;
+      if (pink) {
+        // Paul Kellet's pink-noise filter
+        b0 = 0.99886 * b0 + w * 0.0555179;
+        b1 = 0.99332 * b1 + w * 0.0750759;
+        b2 = 0.96900 * b2 + w * 0.1538520;
+        b3 = 0.86650 * b3 + w * 0.3104856;
+        b4 = 0.55000 * b4 + w * 0.5329522;
+        b5 = -0.7616 * b5 - w * 0.0168980;
+        data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362) * 0.11;
+        b6 = w * 0.115926;
+      } else {
+        data[i] = w;
+      }
+    }
+    return buf;
+  };
+
   const playPageTurn = () => {
     if (!soundOn) return;
     const ctx = ensureAudio();
     if (!ctx) return;
     if (ctx.state === 'suspended') ctx.resume();
 
-    const duration = 0.28;
     const now = ctx.currentTime;
+    const master = ctx.createGain();
+    master.gain.value = 0.6;
+    master.connect(ctx.destination);
 
-    // Noise buffer
-    const bufferSize = Math.floor(ctx.sampleRate * duration);
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      // pink-ish noise with a slight envelope
-      const t = i / bufferSize;
-      const env = Math.pow(1 - t, 1.8) * (1 + Math.sin(t * 28) * 0.18);
-      data[i] = (Math.random() * 2 - 1) * env * 0.9;
-    }
-    const src = ctx.createBufferSource();
-    src.buffer = buffer;
+    // ----- Layer 1: initial "snap" — short, mid-high, fast attack/decay -----
+    const snapDur = 0.06;
+    const snap = ctx.createBufferSource();
+    snap.buffer = makeNoiseBuffer(ctx, snapDur, false);
+    const snapBp = ctx.createBiquadFilter();
+    snapBp.type = 'bandpass';
+    snapBp.frequency.value = 2200;
+    snapBp.Q.value = 1.6;
+    const snapGain = ctx.createGain();
+    snapGain.gain.setValueAtTime(0, now);
+    snapGain.gain.linearRampToValueAtTime(0.55, now + 0.004);
+    snapGain.gain.exponentialRampToValueAtTime(0.0001, now + snapDur);
+    snap.connect(snapBp).connect(snapGain).connect(master);
+    snap.start(now);
+    snap.stop(now + snapDur + 0.02);
 
-    // Bandpass for "paper" character
-    const bp = ctx.createBiquadFilter();
-    bp.type = 'bandpass';
-    bp.frequency.value = 3200;
-    bp.Q.value = 0.9;
+    // ----- Layer 2: rustle body — pink noise, slower decay, sweeping filter -----
+    const rustleDur = 0.42;
+    const rustle = ctx.createBufferSource();
+    rustle.buffer = makeNoiseBuffer(ctx, rustleDur, true);
+    const rustleBp = ctx.createBiquadFilter();
+    rustleBp.type = 'bandpass';
+    rustleBp.frequency.setValueAtTime(1400, now);
+    rustleBp.frequency.exponentialRampToValueAtTime(700, now + rustleDur);
+    rustleBp.Q.value = 0.6;
+    const rustleHi = ctx.createBiquadFilter();
+    rustleHi.type = 'highpass';
+    rustleHi.frequency.value = 400;
+    const rustleGain = ctx.createGain();
+    rustleGain.gain.setValueAtTime(0, now);
+    rustleGain.gain.linearRampToValueAtTime(0.42, now + 0.03);
+    rustleGain.gain.setValueAtTime(0.42, now + 0.10);
+    rustleGain.gain.exponentialRampToValueAtTime(0.0001, now + rustleDur);
+    // Subtle amplitude modulation (paper folding crinkle)
+    const am = ctx.createOscillator();
+    am.frequency.value = 38;
+    const amGain = ctx.createGain();
+    amGain.gain.value = 0.18;
+    am.connect(amGain).connect(rustleGain.gain);
+    am.start(now);
+    am.stop(now + rustleDur);
+    rustle.connect(rustleBp).connect(rustleHi).connect(rustleGain).connect(master);
+    rustle.start(now);
+    rustle.stop(now + rustleDur + 0.02);
 
-    // High-shelf boost for crisp rustle
-    const hi = ctx.createBiquadFilter();
-    hi.type = 'highshelf';
-    hi.frequency.value = 4500;
-    hi.gain.value = 6;
-
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.55, now);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-
-    src.connect(bp).connect(hi).connect(gain).connect(ctx.destination);
-    src.start(now);
-    src.stop(now + duration + 0.02);
+    // ----- Layer 3: low whoosh — air movement of the turning page -----
+    const whooshDur = 0.32;
+    const whoosh = ctx.createBufferSource();
+    whoosh.buffer = makeNoiseBuffer(ctx, whooshDur, true);
+    const whooshLp = ctx.createBiquadFilter();
+    whooshLp.type = 'lowpass';
+    whooshLp.frequency.setValueAtTime(900, now);
+    whooshLp.frequency.exponentialRampToValueAtTime(300, now + whooshDur);
+    whooshLp.Q.value = 0.7;
+    const whooshGain = ctx.createGain();
+    whooshGain.gain.setValueAtTime(0, now + 0.02);
+    whooshGain.gain.linearRampToValueAtTime(0.22, now + 0.10);
+    whooshGain.gain.exponentialRampToValueAtTime(0.0001, now + whooshDur);
+    whoosh.connect(whooshLp).connect(whooshGain).connect(master);
+    whoosh.start(now);
+    whoosh.stop(now + whooshDur + 0.02);
   };
 
   /* =========================================================
