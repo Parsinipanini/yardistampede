@@ -4,7 +4,7 @@
 :root {
   /* palette */
   --c-bark:       #56342b;
-  --c-burgundy:  #731a1e;
+  --c-burgundy:  #5a1316;
   --c-ember:     #be3627;
   --c-rust:      #a55328;
   --c-gold:      #e6ad40;
@@ -83,11 +83,11 @@ input, select, textarea, button { font-family: inherit; }
     radial-gradient(ellipse 80% 60% at 50% 95%, rgba(115,26,30,.35), transparent 60%),
     linear-gradient(
       to bottom,
-      #2a1410 0%,
-      #4a1c18 18%,
-      #8a2a1f 38%,
-      #be3627 58%,
-      #e6ad40 78%,
+      #5a2218 0%,
+      #7a2a1d 15%,
+      #a8331f 35%,
+      #be3627 55%,
+      #e6ad40 76%,
       #f3d28a 92%,
       #e5d4b6 100%
     );
@@ -565,7 +565,7 @@ input, select, textarea, button { font-family: inherit; }
   color: var(--c-burgundy);
   letter-spacing: .35em;
   text-transform: uppercase;
-  opacity: .85;
+  font-weight: 700;
 }
 .page-head__title {
   font-family: var(--ff-display);
@@ -604,6 +604,8 @@ input, select, textarea, button { font-family: inherit; }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(1.08);
+  transform-origin: center center;
 }
 
 /* small floating button so the user knows it's interactive */
@@ -680,7 +682,7 @@ input, select, textarea, button { font-family: inherit; }
   color: var(--c-burgundy);
   letter-spacing: .3em;
   text-transform: uppercase;
-  opacity: .85;
+  font-weight: 700;
 }
 .invite__value {
   font-family: var(--ff-body);
@@ -810,7 +812,7 @@ input, select, textarea, button { font-family: inherit; }
   text-transform: uppercase;
   text-align: center;
   margin: 0 0 12px;
-  opacity: .9;
+  font-weight: 700;
 }
 .travel__rows { display: grid; gap: 8px; }
 .travel__row {
@@ -870,7 +872,7 @@ input, select, textarea, button { font-family: inherit; }
   color: var(--c-burgundy);
   letter-spacing: .25em;
   text-transform: uppercase;
-  opacity: .9;
+  font-weight: 700;
 }
 .field input,
 .field select,

@@ -57,7 +57,7 @@
     if (!soundOn) return;
     try {
       const a = pageTurnSrc.cloneNode();
-      a.volume = 0.75;
+      a.volume = 0.60;
       const p = a.play();
       if (p && typeof p.catch === 'function') p.catch(() => {});
     } catch (_) { /* no-op */ }
