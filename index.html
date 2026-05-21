@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>An Invitation — Yardi at the Calgary Stampede</title>
+  <meta name="description" content="Yardi invites you to the Greatest Outdoor Show on Earth — Calgary Stampede, July 3–12, 2026." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Crimson+Pro:ital,wght@0,400;0,500;1,400&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/book.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       PAPER-CUTOUT LANDSCAPE BEHIND THE BOOK
+       ============================================================ -->
+  <div class="scene" aria-hidden="true">
+    <div class="scene__sky"></div>
+    <div class="scene__sun"></div>
+
+    <!-- Drifting clouds (top layer, slow) -->
+    <div class="scene__clouds scene__clouds--far">
+      <img src="assets/Cloud2.svg" alt="" class="cloud cloud--a" />
+      <img src="assets/Cloud1.svg" alt="" class="cloud cloud--b" />
+      <img src="assets/Cloud2.svg" alt="" class="cloud cloud--c" />
+    </div>
+
+    <!-- Paper cutout silhouette mountains / hills -->
+    <svg class="scene__mountains" viewBox="0 0 1600 380" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,380 L0,210 L120,140 L210,200 L320,90 L430,180 L540,120 L660,200 L780,80 L900,180 L1010,140 L1140,210 L1260,130 L1380,200 L1500,150 L1600,210 L1600,380 Z" fill="#a55328" />
+    </svg>
+    <svg class="scene__hills" viewBox="0 0 1600 320" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,320 L0,230 C120,180 210,250 340,210 C470,170 580,240 720,210 C860,180 980,230 1120,200 C1260,170 1380,240 1500,210 L1600,200 L1600,320 Z" fill="#be3627" />
+    </svg>
+    <svg class="scene__foreground" viewBox="0 0 1600 220" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,220 L0,150 C140,120 260,160 420,140 C580,120 700,170 880,150 C1060,130 1200,180 1380,160 L1600,150 L1600,220 Z" fill="#731a1e" />
+    </svg>
+
+    <!-- Stampede: horses galloping across the mid-ground -->
+    <div class="stampede" aria-hidden="true">
+      <img src="assets/Hourse.svg" class="horse horse--1" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--2" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--3" alt="" />
+      <img src="assets/Hourse.svg" class="horse horse--4" alt="" />
+    </div>
+
+    <!-- Cowboys, smaller, drifting on the hills -->
+    <img src="assets/Cowboy1.svg" alt="" class="cowboy cowboy--left" />
+    <img src="assets/Cowboy2.svg" alt="" class="cowboy cowboy--right" />
+
+    <!-- A second, closer cloud layer to add depth -->
+    <div class="scene__clouds scene__clouds--near">
+      <img src="assets/Cloud1.svg" alt="" class="cloud cloud--d" />
+      <img src="assets/Cloud2.svg" alt="" class="cloud cloud--e" />
+    </div>
+
+    <!-- Paper grain over the whole scene -->
+    <div class="scene__grain"></div>
+  </div>
+
+  <!-- ============================================================
+       LOADING SCREEN
+       ============================================================ -->
+  <div class="loader" id="loader">
+    <div class="loader__inner">
+      <div class="loader__spinner"></div>
+      <div class="loader__label">Saddling up&hellip;</div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TOP BAR
+       ============================================================ -->
+  <header class="topbar">
+    <a class="topbar__brand" href="#">
+      <img src="https://www.yardi.com/wp-content/client-mu-plugins/cmw-icons/svg/logos/yardi_logo.svg" alt="Yardi" />
+    </a>
+    <div class="topbar__pageno" id="pageIndicator">
+      <span id="pageNow">Cover</span>
+      <span class="topbar__pageno-sep">/</span>
+      <span id="pageTotal">4</span>
+    </div>
+    <button class="topbar__sound" id="soundToggle" aria-pressed="true" title="Toggle page-turn sound">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="M5 9v6h4l5 4V5L9 9H5z" fill="currentColor"/>
+        <path d="M16.5 12c0-1.6-.9-3-2.3-3.7v7.4c1.4-.7 2.3-2.1 2.3-3.7z" fill="currentColor"/>
+      </svg>
+    </button>
+  </header>
+
+  <!-- ============================================================
+       BOOK
+       ============================================================ -->
+  <main class="stage" id="stage">
+
+    <div class="book" id="book" aria-label="Storybook invitation. Click the corner or drag to turn the page.">
+
+      <!-- shadow under the book -->
+      <div class="book__shadow"></div>
+
+      <!-- ============================================================
+           PAGE 0: COVER (closed book — video plays here)
+           ============================================================ -->
+      <article class="page page--cover" data-page="0" aria-label="Cover">
+        <div class="page__face page__face--front">
+          <div class="cover">
+            <video class="cover__video" autoplay muted loop playsinline preload="auto" poster="">
+              <source src="assets/hero.mp4" type="video/mp4" />
+            </video>
+            <div class="cover__overlay"></div>
+            <div class="cover__frame">
+              <div class="cover__eyebrow">Yardi presents</div>
+              <h1 class="cover__title">
+                <span class="cover__title-line">An</span>
+                <span class="cover__title-line cover__title-line--italic">Invitation</span>
+                <span class="cover__title-rule"></span>
+                <span class="cover__title-sub">to the Greatest Outdoor Show on Earth</span>
+              </h1>
+              <div class="cover__foot">
+                <span>Calgary Stampede</span>
+                <span class="cover__dot">&bull;</span>
+                <span>July 3 &ndash; 12, 2026</span>
+              </div>
+            </div>
+            <button class="cover__open" id="coverOpen" type="button">
+              <span>Open the Book</span>
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="page__face page__face--back">
+          <div class="page-inner page-inner--inside-cover">
+            <div class="paper-cutout paper-cutout--center">
+              <img src="assets/Cowboy1.svg" alt="" />
+            </div>
+            <p class="dedication">
+              <span class="dedication__kicker">A note from Yardi</span>
+              For ten July days, the prairie wakes up. We&rsquo;d be honoured to share it with you &mdash;
+              dust on your boots, a chuckwagon thundering past, the sky the colour of a good whisky.
+              Turn the page.
+            </p>
+          </div>
+        </div>
+        <div class="page__corner page__corner--br" data-direction="next" aria-hidden="true"></div>
+      </article>
+
+      <!-- ============================================================
+           PAGE 1: HERO + EVENT DETAILS
+           ============================================================ -->
+      <article class="page" data-page="1" aria-label="The invitation">
+        <div class="page__face page__face--front">
+          <div class="page-inner">
+            <div class="page-paper">
+              <div class="page-paper__deco page-paper__deco--tl"></div>
+              <div class="page-paper__deco page-paper__deco--br"></div>
+
+              <header class="page-head">
+                <div class="page-head__eyebrow">Chapter One</div>
+                <h2 class="page-head__title">You&rsquo;re Invited</h2>
+                <div class="page-head__rule"></div>
+              </header>
+
+              <div class="invite">
+                <p class="invite__lede">
+                  Yardi cordially invites you to join us under the big Alberta sky for
+                  <em>The Greatest Outdoor Show on Earth</em>.
+                </p>
+
+                <div class="invite__grid">
+                  <div class="invite__cell">
+                    <div class="invite__label">When</div>
+                    <div class="invite__value">July 3 &ndash; 12, 2026</div>
+                    <div class="invite__hint">Hospitality dates TBA</div>
+                  </div>
+                  <div class="invite__cell">
+                    <div class="invite__label">Where</div>
+                    <div class="invite__value">Stampede Park</div>
+                    <div class="invite__hint">Calgary, Alberta, Canada</div>
+                  </div>
+                  <div class="invite__cell">
+                    <div class="invite__label">Dress</div>
+                    <div class="invite__value">Western Chic</div>
+                    <div class="invite__hint">Boots encouraged</div>
+                  </div>
+                  <div class="invite__cell">
+                    <div class="invite__label">Host</div>
+                    <div class="invite__value">Yardi</div>
+                    <div class="invite__hint">Your team will be in touch</div>
+                  </div>
+                </div>
+
+                <div class="invite__handwritten">
+                  Cannot wait to see you there. &mdash; The Yardi Team
+                </div>
+              </div>
+
+              <!-- paper-cutout decorations -->
+              <img src="assets/Cloud1.svg" alt="" class="cutout cutout--cloud-1" />
+              <img src="assets/Cloud2.svg" alt="" class="cutout cutout--cloud-2" />
+              <img src="assets/Hourse.svg" alt="" class="cutout cutout--horse-1" />
+            </div>
+          </div>
+        </div>
+        <div class="page__face page__face--back">
+          <div class="page-inner page-inner--back"></div>
+        </div>
+        <div class="page__corner page__corner--br" data-direction="next" aria-hidden="true"></div>
+        <div class="page__corner page__corner--bl" data-direction="prev" aria-hidden="true"></div>
+      </article>
+
+      <!-- ============================================================
+           PAGE 2: AGENDA
+           ============================================================ -->
+      <article class="page" data-page="2" aria-label="Agenda">
+        <div class="page__face page__face--front">
+          <div class="page-inner">
+            <div class="page-paper">
+              <div class="page-paper__deco page-paper__deco--tl"></div>
+              <div class="page-paper__deco page-paper__deco--br"></div>
+
+              <header class="page-head">
+                <div class="page-head__eyebrow">Chapter Two</div>
+                <h2 class="page-head__title">The Programme</h2>
+                <div class="page-head__rule"></div>
+              </header>
+
+              <ol class="agenda">
+                <li class="agenda__item">
+                  <div class="agenda__time">Day One <span>&middot;</span> Evening</div>
+                  <div class="agenda__body">
+                    <h3>Welcome Reception</h3>
+                    <p>Cocktails on the terrace as the parade rolls in. Meet your Yardi hosts and fellow guests beneath strings of paper lanterns.</p>
+                  </div>
+                </li>
+                <li class="agenda__item">
+                  <div class="agenda__time">Day Two <span>&middot;</span> Afternoon</div>
+                  <div class="agenda__body">
+                    <h3>Rodeo &amp; Chuckwagons</h3>
+                    <p>Reserved suite seating for the championship rodeo and an evening at the Rangeland Derby &mdash; the thunder of the chuckwagons up close.</p>
+                  </div>
+                </li>
+                <li class="agenda__item">
+                  <div class="agenda__time">Day Three <span>&middot;</span> Morning</div>
+                  <div class="agenda__body">
+                    <h3>Stampede Breakfast</h3>
+                    <p>A Western tradition: pancakes, bacon, fiddle music, and warm conversation before the day begins.</p>
+                  </div>
+                </li>
+                <li class="agenda__item">
+                  <div class="agenda__time">Day Three <span>&middot;</span> Evening</div>
+                  <div class="agenda__body">
+                    <h3>Private Dinner &amp; Concert</h3>
+                    <p>A curated dinner followed by reserved seats at the Grandstand Show &mdash; fireworks over the prairie to close the night.</p>
+                  </div>
+                </li>
+              </ol>
+
+              <img src="assets/Cowboy2.svg" alt="" class="cutout cutout--cowboy-2" />
+              <img src="assets/Cloud1.svg" alt="" class="cutout cutout--cloud-3" />
+            </div>
+          </div>
+        </div>
+        <div class="page__face page__face--back">
+          <div class="page-inner page-inner--back"></div>
+        </div>
+        <div class="page__corner page__corner--br" data-direction="next" aria-hidden="true"></div>
+        <div class="page__corner page__corner--bl" data-direction="prev" aria-hidden="true"></div>
+      </article>
+
+      <!-- ============================================================
+           PAGE 3: ABOUT THE STAMPEDE + TRAVEL
+           ============================================================ -->
+      <article class="page" data-page="3" aria-label="About &amp; travel">
+        <div class="page__face page__face--front">
+          <div class="page-inner">
+            <div class="page-paper">
+              <div class="page-paper__deco page-paper__deco--tl"></div>
+              <div class="page-paper__deco page-paper__deco--br"></div>
+
+              <header class="page-head">
+                <div class="page-head__eyebrow">Chapter Three</div>
+                <h2 class="page-head__title">About &amp; Travel</h2>
+                <div class="page-head__rule"></div>
+              </header>
+
+              <div class="about">
+                <p class="about__lede">
+                  For ten days every July, Calgary becomes the centre of the cowboy universe.
+                  Since 1912, the Stampede has gathered the world&rsquo;s best riders, the loudest cheers, and a city that wears its hat with pride.
+                </p>
+
+                <div class="about__grid">
+                  <div class="about__chip">
+                    <div class="about__chip-title">Rodeo</div>
+                    <p>The world&rsquo;s richest outdoor rodeo &mdash; bull riding, bronc, barrel racing.</p>
+                  </div>
+                  <div class="about__chip">
+                    <div class="about__chip-title">Chuckwagons</div>
+                    <p>Heart-stopping Rangeland Derby races every night.</p>
+                  </div>
+                  <div class="about__chip">
+                    <div class="about__chip-title">Music</div>
+                    <p>Stages across the park, from country anthems to headline pop.</p>
+                  </div>
+                  <div class="about__chip">
+                    <div class="about__chip-title">Heritage</div>
+                    <p>Indigenous powwow, Western art, and the Midway after dark.</p>
+                  </div>
+                </div>
+
+                <div class="travel">
+                  <h3 class="travel__title">Getting there</h3>
+                  <div class="travel__rows">
+                    <div class="travel__row">
+                      <div class="travel__k">Fly</div>
+                      <div class="travel__v">Calgary International (YYC) &mdash; 20 min from Stampede Park.</div>
+                    </div>
+                    <div class="travel__row">
+                      <div class="travel__k">Stay</div>
+                      <div class="travel__v">Host hotel &amp; room block details to be shared with your RSVP confirmation.</div>
+                    </div>
+                    <div class="travel__row">
+                      <div class="travel__k">On site</div>
+                      <div class="travel__v">Private transfers between hotel and the park provided throughout the programme.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <img src="assets/Cloud2.svg" alt="" class="cutout cutout--cloud-4" />
+              <img src="assets/Hourse.svg" alt="" class="cutout cutout--horse-2" />
+            </div>
+          </div>
+        </div>
+        <div class="page__face page__face--back">
+          <div class="page-inner page-inner--back"></div>
+        </div>
+        <div class="page__corner page__corner--br" data-direction="next" aria-hidden="true"></div>
+        <div class="page__corner page__corner--bl" data-direction="prev" aria-hidden="true"></div>
+      </article>
+
+      <!-- ============================================================
+           PAGE 4: RSVP
+           ============================================================ -->
+      <article class="page page--final" data-page="4" aria-label="RSVP">
+        <div class="page__face page__face--front">
+          <div class="page-inner">
+            <div class="page-paper">
+              <div class="page-paper__deco page-paper__deco--tl"></div>
+              <div class="page-paper__deco page-paper__deco--br"></div>
+
+              <header class="page-head">
+                <div class="page-head__eyebrow">Chapter Four</div>
+                <h2 class="page-head__title">RSVP</h2>
+                <div class="page-head__rule"></div>
+              </header>
+
+              <p class="rsvp__lede">Save your seat at the table. We&rsquo;ll follow up with your full itinerary.</p>
+
+              <!-- Replace action with your Formspree endpoint, e.g. https://formspree.io/f/xxxxxxx -->
+              <form class="rsvp" id="rsvpForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+                <div class="rsvp__row rsvp__row--two">
+                  <label class="field">
+                    <span class="field__label">First name</span>
+                    <input type="text" name="first_name" required autocomplete="given-name" />
+                  </label>
+                  <label class="field">
+                    <span class="field__label">Last name</span>
+                    <input type="text" name="last_name" required autocomplete="family-name" />
+                  </label>
+                </div>
+                <div class="rsvp__row rsvp__row--two">
+                  <label class="field">
+                    <span class="field__label">Email</span>
+                    <input type="email" name="email" required autocomplete="email" />
+                  </label>
+                  <label class="field">
+                    <span class="field__label">Company</span>
+                    <input type="text" name="company" autocomplete="organization" />
+                  </label>
+                </div>
+                <div class="rsvp__row rsvp__row--two">
+                  <label class="field">
+                    <span class="field__label">Attending?</span>
+                    <select name="attending" required>
+                      <option value="">Choose&hellip;</option>
+                      <option value="yes">Yes, with bells on</option>
+                      <option value="maybe">Tentative</option>
+                      <option value="no">Regretfully declining</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span class="field__label">Bringing a guest?</span>
+                    <select name="guest">
+                      <option value="no">No</option>
+                      <option value="yes">Yes &mdash; +1</option>
+                    </select>
+                  </label>
+                </div>
+                <label class="field field--full">
+                  <span class="field__label">Dietary or accessibility notes</span>
+                  <textarea name="notes" rows="3" placeholder="Optional"></textarea>
+                </label>
+
+                <div class="rsvp__actions">
+                  <button class="btn btn--primary" type="submit">
+                    <span>Send my RSVP</span>
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
+                  <div class="rsvp__fineprint">Replies go to your Yardi host. Hospitality is by invitation.</div>
+                </div>
+
+                <div class="rsvp__success" id="rsvpSuccess" hidden>
+                  <div class="rsvp__success-mark">&#10003;</div>
+                  <h3>See you in Calgary.</h3>
+                  <p>Thank you &mdash; we&rsquo;ll be in touch shortly with the next chapter.</p>
+                </div>
+              </form>
+
+              <img src="assets/Cloud1.svg" alt="" class="cutout cutout--cloud-5" />
+              <img src="assets/Cowboy1.svg" alt="" class="cutout cutout--cowboy-1" />
+            </div>
+          </div>
+        </div>
+        <div class="page__face page__face--back">
+          <div class="page-inner page-inner--back"></div>
+        </div>
+        <div class="page__corner page__corner--bl" data-direction="prev" aria-hidden="true"></div>
+      </article>
+
+    </div>
+
+    <!-- Page controls -->
+    <button class="nav nav--prev" id="navPrev" type="button" aria-label="Previous page">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="nav nav--next" id="navNext" type="button" aria-label="Next page">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
+    <div class="hint" id="hint">
+      <span>Grab the corner or click <kbd>&rarr;</kbd></span>
+    </div>
+  </main>
+
+  <!-- ============================================================
+       SCRIPTS
+       ============================================================ -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

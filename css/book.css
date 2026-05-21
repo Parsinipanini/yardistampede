@@ -1,0 +1,184 @@
+/* =========================================================
+   THE BOOK
+   The book lives in a 3D scene. Pages stack on top of each other
+   and rotate around their left edge (spine) to flip.
+   ========================================================= */
+
+.book {
+  position: relative;
+  width: var(--book-w);
+  height: var(--book-h);
+  transform-style: preserve-3d;
+  transition: transform 1.2s var(--ease-soft);
+  /* book starts closed, slightly tilted, centered like a hero object */
+  transform: rotateX(8deg) rotateY(-8deg) scale(.92);
+  z-index: 10;
+}
+
+/* When opened we tilt it down to face the reader */
+.book.is-open {
+  transform: rotateX(0deg) rotateY(0deg) scale(1);
+}
+
+/* Soft shadow on the ground beneath the book */
+.book__shadow {
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  bottom: -8%;
+  height: 60px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.55) 0%, rgba(0,0,0,.25) 35%, rgba(0,0,0,0) 70%);
+  filter: blur(8px);
+  z-index: -1;
+  pointer-events: none;
+  transform: translateZ(-1px);
+}
+
+/* =========================================================
+   PAGES
+   ========================================================= */
+.page {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 1.05s var(--ease-paper);
+  will-change: transform;
+  border-radius: 2px 8px 8px 2px;
+  box-shadow:
+    /* spine shadow on left */
+    inset 8px 0 16px -8px rgba(0,0,0,.35),
+    /* outer page shadow */
+    2px 2px 16px rgba(0,0,0,.35);
+  background: var(--c-paper);
+}
+
+/* The two faces of each page */
+.page__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: inherit;
+  overflow: hidden;
+}
+.page__face--front { transform: rotateY(0deg);   z-index: 2; }
+.page__face--back  { transform: rotateY(180deg); z-index: 1; }
+
+/* The cover page has a richer leather-like background bleeding through */
+.page--cover {
+  background: linear-gradient(135deg, #2a1a13, #56342b);
+  box-shadow:
+    inset 8px 0 24px -8px rgba(0,0,0,.7),
+    2px 4px 24px rgba(0,0,0,.6);
+}
+
+/* z-index stack — later pages are physically beneath earlier ones */
+.page[data-page="0"] { z-index: 50; }
+.page[data-page="1"] { z-index: 40; }
+.page[data-page="2"] { z-index: 30; }
+.page[data-page="3"] { z-index: 20; }
+.page[data-page="4"] { z-index: 10; }
+
+/* When a page has been flipped (turned to the left) */
+.page.is-flipped { transform: rotateY(-180deg); }
+
+/* While a page is mid-flip — keep it on top of the stack */
+.page.is-flipping { z-index: 99 !important; }
+
+/* After flipping the stacking order inverts (flipped pages sit on the LEFT pile) */
+.page.is-flipped[data-page="0"] { z-index: 10; }
+.page.is-flipped[data-page="1"] { z-index: 20; }
+.page.is-flipped[data-page="2"] { z-index: 30; }
+.page.is-flipped[data-page="3"] { z-index: 40; }
+.page.is-flipped[data-page="4"] { z-index: 50; }
+
+/* =========================================================
+   CORNERS — drag handles
+   ========================================================= */
+.page__corner {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  z-index: 5;
+  cursor: grab;
+  pointer-events: auto;
+  /* visual hint of a curled corner */
+  transition: opacity .25s ease;
+}
+.page__corner:active { cursor: grabbing; }
+
+.page__corner--br {
+  bottom: 0; right: 0;
+  background:
+    linear-gradient(225deg, rgba(86,52,43,.25) 0%, rgba(86,52,43,.06) 35%, transparent 55%);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  border-bottom-right-radius: 8px;
+}
+.page__corner--bl {
+  bottom: 0; left: 0;
+  background:
+    linear-gradient(135deg, rgba(86,52,43,.25) 0%, rgba(86,52,43,.06) 35%, transparent 55%);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+  border-bottom-left-radius: 2px;
+}
+
+/* subtle "peel" indicator */
+.page__corner::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: var(--c-paper-2);
+  border-radius: 2px;
+  box-shadow: -1px -1px 2px rgba(0,0,0,.2);
+  transition: transform .3s var(--ease-soft), opacity .3s ease;
+  opacity: 0;
+}
+.page__corner--br::after {
+  bottom: 6px; right: 6px;
+  transform: rotate(45deg) translate(0, 0);
+}
+.page__corner--bl::after {
+  bottom: 6px; left: 6px;
+  transform: rotate(-45deg) translate(0, 0);
+}
+.page__corner:hover::after {
+  opacity: .9;
+}
+.page__corner--br:hover::after {
+  transform: rotate(45deg) translate(-3px, -3px);
+}
+.page__corner--bl:hover::after {
+  transform: rotate(-45deg) translate(3px, -3px);
+}
+
+/* corners hidden during automated animations */
+.book.is-animating .page__corner { pointer-events: none; }
+
+/* =========================================================
+   ENTER ANIMATION (book settles into view)
+   ========================================================= */
+@keyframes bookEnter {
+  from {
+    opacity: 0;
+    transform: rotateX(24deg) rotateY(-22deg) translateY(40px) scale(.86);
+  }
+  to {
+    opacity: 1;
+    transform: rotateX(8deg) rotateY(-8deg) scale(.92);
+  }
+}
+.book {
+  animation: bookEnter 1.6s var(--ease-soft) .2s backwards;
+}
+
+/* idle subtle float */
+@keyframes bookFloat {
+  0%,100% { transform: rotateX(8deg) rotateY(-8deg) scale(.92) translateY(0); }
+  50%     { transform: rotateX(8deg) rotateY(-8deg) scale(.92) translateY(-6px); }
+}
+.book:not(.is-open) {
+  animation: bookEnter 1.6s var(--ease-soft) .2s backwards,
+             bookFloat 6s ease-in-out 2s infinite;
+}
