@@ -228,6 +228,27 @@
   });
 
   /* =========================================================
+     MOUSE WHEEL — scroll within page first; flip at boundary
+     ========================================================= */
+  let wheelCooldown = false;
+  window.addEventListener('wheel', (e) => {
+    // If cursor is over scrollable page content, let it scroll naturally
+    // and only flip when it hits the top/bottom boundary.
+    const paper = e.target.closest('.page-paper');
+    if (paper) {
+      const atBottom = paper.scrollTop + paper.clientHeight >= paper.scrollHeight - 2;
+      const atTop    = paper.scrollTop <= 0;
+      if (e.deltaY > 0 && !atBottom) return;
+      if (e.deltaY < 0 && !atTop)    return;
+    }
+    if (wheelCooldown || isAnimating) return;
+    wheelCooldown = true;
+    setTimeout(() => { wheelCooldown = false; }, 900);
+    if (e.deltaY > 0) flipForward();
+    else if (e.deltaY < 0) flipBackward();
+  }, { passive: true });
+
+  /* =========================================================
      DRAG TO FLIP
      ========================================================= */
   const setupDrag = (corner) => {
