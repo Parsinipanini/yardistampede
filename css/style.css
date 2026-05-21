@@ -22,7 +22,7 @@
 
   /* book sizing — single-page view */
   --book-w: min(74vw, 880px);
-  --book-h: min(calc(100vh - 110px), 720px);
+  --book-h: min(calc(100vh - 160px), 720px);
   --book-spine: 18px;
 
   /* hardcover overhang — how far the back panel peeks past the page block.
@@ -974,15 +974,22 @@ input, select, textarea, button { font-family: inherit; }
 /* 1280-px laptop range — viewport height is constrained (~610px book),
    so trim padding and font caps to prevent content overflow. */
 @media (max-width: 1366px) {
+  :root { --book-h: min(calc(100vh - 160px), 680px); }
   .page-paper { padding: 22px 30px 24px; }
   .page-head { margin-bottom: 10px; }
   .page-head__title { font-size: clamp(28px, 3.5vw, 44px); }
+  /* About & Travel */
   .about__lede { font-size: 15px; margin-bottom: 10px; }
   .about__grid { gap: 10px; margin-bottom: 10px; }
   .about__chip { padding: 9px 12px; }
   .about__chip p { font-size: 13px; }
   .travel__rows { gap: 5px; }
   .travel__row { padding: 8px 12px; }
+  /* Agenda — tighten item padding to clear 14px overflow */
+  .agenda__item { padding: 9px 0; }
+  /* RSVP — reduce gap to clear 6px overflow */
+  .rsvp { gap: 9px; }
+  .rsvp__lede { margin-bottom: 10px; }
 }
 
 /* Tablet portrait & smaller laptops — book uses more of the viewport,
@@ -990,7 +997,7 @@ input, select, textarea, button { font-family: inherit; }
 @media (max-width: 1024px) {
   :root {
     --book-w: 88vw;
-    --book-h: min(calc(100vh - 100px), 760px);
+    --book-h: min(calc(100vh - 150px), 720px);
     --cover-top:    16px;
     --cover-bottom: 16px;
     --cover-left:   16px;
@@ -1005,7 +1012,7 @@ input, select, textarea, button { font-family: inherit; }
 @media (max-width: 820px) {
   :root {
     --book-w: 94vw;
-    --book-h: min(calc(100vh - 90px), 820px);
+    --book-h: min(calc(100vh - 130px), 780px);
     --cover-top:    12px;
     --cover-bottom: 12px;
     --cover-left:   12px;
