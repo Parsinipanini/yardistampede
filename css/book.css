@@ -36,10 +36,10 @@
    so the book reads as a 3D bound object with real thickness */
 .book__back {
   position: absolute;
-  top: -22px;
-  bottom: -22px;
-  left: -22px;
-  right: -28px;
+  top:    calc(var(--cover-top)    * -1);
+  bottom: calc(var(--cover-bottom) * -1);
+  left:   calc(var(--cover-left)   * -1);
+  right:  calc(var(--cover-right)  * -1);
   background:
     radial-gradient(ellipse at 28% 18%, rgba(255,255,255,.10), transparent 55%),
     repeating-linear-gradient(118deg,
@@ -67,7 +67,7 @@
   top: 10px;
   bottom: 10px;
   right: 6px;
-  width: 16px;
+  width: var(--cover-stack-w);
   background: repeating-linear-gradient(
     0deg,
     #ecdcb9 0 1px, #b89870 1px 2px,
@@ -87,7 +87,7 @@
   left: 4px;
   top: 10px;
   bottom: 10px;
-  width: 16px;
+  width: var(--cover-spine-w);
   background:
     linear-gradient(180deg,
       transparent 0 14%, rgba(0,0,0,.35) 14% 16%, transparent 16% 32%,
