@@ -141,8 +141,11 @@
       <!-- shadow under the book -->
       <div class="book__shadow"></div>
 
-      <!-- hardcover back panel that peeks out behind every page -->
+      <!-- hardcover back panel — right side (always visible) -->
       <div class="book__back" aria-hidden="true"></div>
+
+      <!-- hardcover back panel — left side (revealed once book is opened past cover) -->
+      <div class="book__back book__back--left" aria-hidden="true"></div>
 
       <!-- ============================================================
            PAGE 0: COVER (closed book, video plays here)
@@ -445,6 +448,30 @@
     <button class="nav nav--next" id="navNext" type="button" aria-label="Next page">
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
+
+    <!-- Chapter quick-jump -->
+    <nav class="chapters" id="chapters" aria-label="Jump to chapter">
+      <button class="chapter" data-page="0" type="button">
+        <span class="chapter__roman">&loz;</span>
+        <span class="chapter__name">Cover</span>
+      </button>
+      <button class="chapter" data-page="1" type="button">
+        <span class="chapter__roman">I</span>
+        <span class="chapter__name">Invitation</span>
+      </button>
+      <button class="chapter" data-page="2" type="button">
+        <span class="chapter__roman">II</span>
+        <span class="chapter__name">Programme</span>
+      </button>
+      <button class="chapter" data-page="3" type="button">
+        <span class="chapter__roman">III</span>
+        <span class="chapter__name">About</span>
+      </button>
+      <button class="chapter" data-page="4" type="button">
+        <span class="chapter__roman">IV</span>
+        <span class="chapter__name">RSVP</span>
+      </button>
+    </nav>
 
     <!-- Quick-RSVP shortcut -->
     <button class="rsvp-shortcut" id="rsvpShortcut" type="button" aria-label="Skip to RSVP">

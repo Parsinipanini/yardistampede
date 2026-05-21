@@ -24,6 +24,8 @@
   const pageNow       = $('#pageNow');
   const pageTotal     = $('#pageTotal');
   const rsvpShortcut  = $('#rsvpShortcut');
+  const chaptersNav   = $('#chapters');
+  const chapterBtns   = $$('.chapter', chaptersNav);
   const pages         = $$('.page', book).sort(
     (a, b) => Number(a.dataset.page) - Number(b.dataset.page)
   );
@@ -44,114 +46,21 @@
   });
 
   /* =========================================================
-     PAGE-TURN SFX (Web Audio API — filtered noise burst)
+     PAGE-TURN SFX — recorded mp3 sample
+     Clone the audio element per play so rapid flips can overlap
+     without cutting each other off.
      ========================================================= */
-  let audioCtx = null;
-  const ensureAudio = () => {
-    if (audioCtx) return audioCtx;
-    try {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    } catch (_) { /* no-op */ }
-    return audioCtx;
-  };
-
-  // Pink-noise buffer (1/f) — more "paper" than white noise
-  const makeNoiseBuffer = (ctx, durationSec, pink = true) => {
-    const len = Math.floor(ctx.sampleRate * durationSec);
-    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
-    for (let i = 0; i < len; i++) {
-      const w = Math.random() * 2 - 1;
-      if (pink) {
-        // Paul Kellet's pink-noise filter
-        b0 = 0.99886 * b0 + w * 0.0555179;
-        b1 = 0.99332 * b1 + w * 0.0750759;
-        b2 = 0.96900 * b2 + w * 0.1538520;
-        b3 = 0.86650 * b3 + w * 0.3104856;
-        b4 = 0.55000 * b4 + w * 0.5329522;
-        b5 = -0.7616 * b5 - w * 0.0168980;
-        data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362) * 0.11;
-        b6 = w * 0.115926;
-      } else {
-        data[i] = w;
-      }
-    }
-    return buf;
-  };
+  const pageTurnSrc = new Audio('assets/page-turn.mp3');
+  pageTurnSrc.preload = 'auto';
 
   const playPageTurn = () => {
     if (!soundOn) return;
-    const ctx = ensureAudio();
-    if (!ctx) return;
-    if (ctx.state === 'suspended') ctx.resume();
-
-    const now = ctx.currentTime;
-    const master = ctx.createGain();
-    master.gain.value = 0.6;
-    master.connect(ctx.destination);
-
-    // ----- Layer 1: initial "snap" — short, mid-high, fast attack/decay -----
-    const snapDur = 0.06;
-    const snap = ctx.createBufferSource();
-    snap.buffer = makeNoiseBuffer(ctx, snapDur, false);
-    const snapBp = ctx.createBiquadFilter();
-    snapBp.type = 'bandpass';
-    snapBp.frequency.value = 2200;
-    snapBp.Q.value = 1.6;
-    const snapGain = ctx.createGain();
-    snapGain.gain.setValueAtTime(0, now);
-    snapGain.gain.linearRampToValueAtTime(0.55, now + 0.004);
-    snapGain.gain.exponentialRampToValueAtTime(0.0001, now + snapDur);
-    snap.connect(snapBp).connect(snapGain).connect(master);
-    snap.start(now);
-    snap.stop(now + snapDur + 0.02);
-
-    // ----- Layer 2: rustle body — pink noise, slower decay, sweeping filter -----
-    const rustleDur = 0.42;
-    const rustle = ctx.createBufferSource();
-    rustle.buffer = makeNoiseBuffer(ctx, rustleDur, true);
-    const rustleBp = ctx.createBiquadFilter();
-    rustleBp.type = 'bandpass';
-    rustleBp.frequency.setValueAtTime(1400, now);
-    rustleBp.frequency.exponentialRampToValueAtTime(700, now + rustleDur);
-    rustleBp.Q.value = 0.6;
-    const rustleHi = ctx.createBiquadFilter();
-    rustleHi.type = 'highpass';
-    rustleHi.frequency.value = 400;
-    const rustleGain = ctx.createGain();
-    rustleGain.gain.setValueAtTime(0, now);
-    rustleGain.gain.linearRampToValueAtTime(0.42, now + 0.03);
-    rustleGain.gain.setValueAtTime(0.42, now + 0.10);
-    rustleGain.gain.exponentialRampToValueAtTime(0.0001, now + rustleDur);
-    // Subtle amplitude modulation (paper folding crinkle)
-    const am = ctx.createOscillator();
-    am.frequency.value = 38;
-    const amGain = ctx.createGain();
-    amGain.gain.value = 0.18;
-    am.connect(amGain).connect(rustleGain.gain);
-    am.start(now);
-    am.stop(now + rustleDur);
-    rustle.connect(rustleBp).connect(rustleHi).connect(rustleGain).connect(master);
-    rustle.start(now);
-    rustle.stop(now + rustleDur + 0.02);
-
-    // ----- Layer 3: low whoosh — air movement of the turning page -----
-    const whooshDur = 0.32;
-    const whoosh = ctx.createBufferSource();
-    whoosh.buffer = makeNoiseBuffer(ctx, whooshDur, true);
-    const whooshLp = ctx.createBiquadFilter();
-    whooshLp.type = 'lowpass';
-    whooshLp.frequency.setValueAtTime(900, now);
-    whooshLp.frequency.exponentialRampToValueAtTime(300, now + whooshDur);
-    whooshLp.Q.value = 0.7;
-    const whooshGain = ctx.createGain();
-    whooshGain.gain.setValueAtTime(0, now + 0.02);
-    whooshGain.gain.linearRampToValueAtTime(0.22, now + 0.10);
-    whooshGain.gain.exponentialRampToValueAtTime(0.0001, now + whooshDur);
-    whoosh.connect(whooshLp).connect(whooshGain).connect(master);
-    whoosh.start(now);
-    whoosh.stop(now + whooshDur + 0.02);
+    try {
+      const a = pageTurnSrc.cloneNode();
+      a.volume = 0.75;
+      const p = a.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    } catch (_) { /* no-op */ }
   };
 
   /* =========================================================
@@ -173,6 +82,12 @@
     if (rsvpShortcut) {
       rsvpShortcut.classList.toggle('is-hidden', current >= TOTAL_PAGES);
     }
+    // left hardcover appears once we're past the cover
+    book.classList.toggle('is-spread', current >= 1);
+    // chapter nav is always visible (clicking a chapter opens the book if needed)
+    chapterBtns.forEach(btn => {
+      btn.classList.toggle('is-active', Number(btn.dataset.page) === current);
+    });
   };
 
   /* =========================================================
@@ -219,28 +134,37 @@
     book.classList.add('is-animating');
     page.classList.add('is-flipping');
 
+    const startAngle  = direction === +1 ? 0 : -180;
     const targetAngle = direction === +1 ? -180 : 0;
 
-    gsap.to(page, {
-      rotateY: targetAngle,
-      duration: FLIP_DURATION,
-      ease: 'power2.inOut',
-      onStart: () => playPageTurn(),
-      onComplete: () => {
-        if (direction === +1) {
-          page.classList.add('is-flipped');
-          current += 1;
-        } else {
-          page.classList.remove('is-flipped');
-          current -= 1;
+    // When flipping backward the page sits at rotateY(-180deg) via the
+    // is-flipped CSS class. GSAP can't unambiguously decompose that from
+    // the matrix (rotateY(180) ≡ rotateY(-180)), so the tween snaps. Take
+    // ownership of the transform here and remove the class so the tween
+    // runs from a known starting angle.
+    page.classList.remove('is-flipped');
+    gsap.fromTo(page,
+      { rotateY: startAngle },
+      {
+        rotateY: targetAngle,
+        duration: FLIP_DURATION,
+        ease: 'power2.inOut',
+        onStart: () => playPageTurn(),
+        onComplete: () => {
+          if (direction === +1) {
+            page.classList.add('is-flipped');
+            current += 1;
+          } else {
+            current -= 1;
+          }
+          gsap.set(page, { clearProps: 'transform' });
+          page.classList.remove('is-flipping');
+          book.classList.remove('is-animating');
+          isAnimating = false;
+          updateIndicator();
         }
-        gsap.set(page, { clearProps: 'transform' });
-        page.classList.remove('is-flipping');
-        book.classList.remove('is-animating');
-        isAnimating = false;
-        updateIndicator();
       }
-    });
+    );
   };
 
   navNext.addEventListener('click', flipForward);
@@ -443,24 +367,30 @@
     });
 
     const stepFlip = (page, dir) => {
-      const endAngle = dir > 0 ? -180 : 0;
-      tl.to(page, {
-        rotateY: endAngle,
-        duration: RIFFLE_PER_PAGE,
-        ease: 'power2.in',
-        onStart: () => {
-          page.classList.add('is-flipping');
-          playPageTurn();
+      const startAngle = dir > 0 ? 0 : -180;
+      const endAngle   = dir > 0 ? -180 : 0;
+      tl.fromTo(page,
+        { rotateY: startAngle },
+        {
+          rotateY: endAngle,
+          duration: RIFFLE_PER_PAGE,
+          ease: 'power2.in',
+          onStart: () => {
+            // Detach the CSS-driven flipped state so GSAP fully owns the rotation.
+            page.classList.remove('is-flipped');
+            page.classList.add('is-flipping');
+            playPageTurn();
+          },
+          onComplete: () => {
+            if (dir > 0) page.classList.add('is-flipped');
+            page.classList.remove('is-flipping');
+            gsap.set(page, { clearProps: 'transform' });
+            current += dir;
+            updateIndicator();
+          }
         },
-        onComplete: () => {
-          if (dir > 0) page.classList.add('is-flipped');
-          else page.classList.remove('is-flipped');
-          page.classList.remove('is-flipping');
-          gsap.set(page, { clearProps: 'transform' });
-          current += dir;
-          updateIndicator();
-        }
-      }, '>-0.18');  // overlap each flip slightly for a "riffle" feel
+        '>-0.18'  // overlap each flip slightly for a "riffle" feel
+      );
     };
 
     if (forward) {
@@ -470,8 +400,52 @@
     }
   };
 
+  /* =========================================================
+     JUMP TO PAGE — instant, no per-page flip animation.
+     Used by the chapter nav and the RSVP shortcut so the user
+     doesn't have to wait through a riffle of every page in
+     between. Plays a single page-turn sound for feedback.
+     ========================================================= */
+  const jumpToPage = (target) => {
+    target = Math.max(0, Math.min(TOTAL_PAGES, target));
+    if (target === current) return;
+    // Cancel any in-flight tweens before snapping state
+    gsap.killTweensOf(pages);
+    pages.forEach(p => {
+      p.classList.remove('is-flipping');
+      gsap.set(p, { clearProps: 'transform' });
+      p.style.transform = '';
+    });
+    // Set every page to its correct flipped/un-flipped state for `target`
+    pages.forEach(p => {
+      const idx = Number(p.dataset.page);
+      if (idx < target) p.classList.add('is-flipped');
+      else              p.classList.remove('is-flipped');
+    });
+    if (!hasOpened) {
+      hasOpened = true;
+      book.classList.add('is-open');
+    }
+    book.classList.remove('is-animating');
+    isAnimating = false;
+    current = target;
+    playPageTurn();
+    updateIndicator();
+  };
+
   rsvpShortcut?.addEventListener('click', () => {
-    riffleToPage(TOTAL_PAGES);
+    jumpToPage(TOTAL_PAGES);
+  });
+
+  /* =========================================================
+     CHAPTER QUICK-JUMP — instant jump, not a riffle
+     ========================================================= */
+  chapterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = Number(btn.dataset.page);
+      if (Number.isNaN(target)) return;
+      jumpToPage(target);
+    });
   });
 
   /* =========================================================
