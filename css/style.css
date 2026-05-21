@@ -410,7 +410,7 @@ input, select, textarea, button { font-family: inherit; }
 .page-inner {
   position: absolute;
   inset: 0;
-  padding: 20px 24px;
+  padding: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -632,22 +632,6 @@ input, select, textarea, button { font-family: inherit; }
   margin-top: 4px;
 }
 
-/* paper cutouts on pages — always behind content, tucked into corners */
-.cutout {
-  position: absolute;
-  pointer-events: none;
-  filter: drop-shadow(1px 2px 0 rgba(0,0,0,.1));
-  opacity: .35;
-  z-index: 0;
-}
-.cutout--cloud-1 { top: -16px;  left: -20px;  width: 90px; }
-.cutout--cloud-2 { top: -10px;  right: -16px; width: 80px; }
-.cutout--horse-1 {
-  bottom: -20px; right: -20px; width: 110px;
-  filter: brightness(0) saturate(100%) invert(8%) sepia(20%) saturate(2000%) hue-rotate(340deg) drop-shadow(1px 2px 0 rgba(0,0,0,.12));
-  opacity: .25;
-}
-
 /* =========================================================
    PAGE 2 — AGENDA
    ========================================================= */
@@ -695,14 +679,6 @@ input, select, textarea, button { font-family: inherit; }
   margin: 0;
   opacity: .9;
 }
-
-.cutout--cowboy-2 {
-  bottom: -20px; left: -16px; height: 110px; width: auto;
-  filter: drop-shadow(1px 2px 0 rgba(0,0,0,.12));
-  opacity: .25;
-  z-index: 0;
-}
-.cutout--cloud-3 { top: -10px; right: -10px; width: 80px; opacity: .35; z-index: 0; }
 
 /* =========================================================
    PAGE 3 — ABOUT + TRAVEL
@@ -770,14 +746,6 @@ input, select, textarea, button { font-family: inherit; }
   padding-top: 2px;
 }
 .travel__v { font-size: 13px; line-height: 1.4; opacity: .9; }
-
-.cutout--cloud-4 { top: -12px; left: -16px; width: 90px; opacity: .35; z-index: 0; }
-.cutout--horse-2 {
-  bottom: -22px; right: -20px; width: 120px;
-  filter: brightness(0) saturate(100%) invert(8%) sepia(20%) saturate(2000%) hue-rotate(340deg) drop-shadow(1px 2px 0 rgba(0,0,0,.12));
-  opacity: .22;
-  z-index: 0;
-}
 
 /* =========================================================
    PAGE 4 — RSVP
@@ -905,14 +873,6 @@ input, select, textarea, button { font-family: inherit; }
   color: var(--c-burgundy);
 }
 
-.cutout--cloud-5 { top: -12px; right: -14px; width: 90px; opacity: .35; z-index: 0; }
-.cutout--cowboy-1 {
-  bottom: -16px; left: -18px; height: 100px; width: auto;
-  filter: drop-shadow(1px 2px 0 rgba(0,0,0,.12));
-  opacity: .22;
-  z-index: 0;
-}
-
 /* =========================================================
    RESPONSIVE
    Below 900px the book falls back to single-page mode (see book.css).
@@ -924,7 +884,6 @@ input, select, textarea, button { font-family: inherit; }
   }
   .nav { display: none; }
   .topbar { padding: 12px 16px; }
-  .page-inner { padding: 16px 18px; }
   .page-paper { padding: 16px 18px 18px; }
   .invite__grid,
   .about__grid { grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -944,7 +903,6 @@ input, select, textarea, button { font-family: inherit; }
   .topbar { padding: 10px 12px; }
   .topbar__brand img { height: 18px; }
   .topbar__sound { width: 30px; height: 30px; }
-  .page-inner { padding: 12px 12px; }
   .page-paper { padding: 14px 14px 16px; }
   .page-head { margin-bottom: 10px; }
   .page-head__title { font-size: 26px; }
@@ -967,8 +925,6 @@ input, select, textarea, button { font-family: inherit; }
   .field__label { font-size: 12.5px; }
   .btn { padding: 8px 14px; font-size: 14px; }
   .rsvp__fineprint { font-size: 11px; }
-  /* hide decorative cutouts on tiny screens to save space */
-  .cutout { display: none; }
 }
 
 /* reduced motion */
