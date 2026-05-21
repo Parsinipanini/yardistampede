@@ -991,7 +991,7 @@ input, select, textarea, button { font-family: inherit; }
 @media (max-width: 820px) {
   :root {
     --book-w: 94vw;
-    --book-h: calc(100vh - 90px);
+    --book-h: min(calc(100vh - 90px), 820px);
     --cover-top:    12px;
     --cover-bottom: 12px;
     --cover-left:   12px;
@@ -1028,36 +1028,42 @@ input, select, textarea, button { font-family: inherit; }
   .topbar { padding: 10px 12px; }
   .topbar__brand img { height: 18px; }
   .topbar__sound { width: 32px; height: 32px; }
-  .page-paper { padding: 18px 16px 20px; }
-  .page-head { margin-bottom: 16px; }
-  .page-head__title { font-size: clamp(26px, 7vw, 34px); }
-  .page-head__eyebrow { font-size: 12px; letter-spacing: .3em; }
-  .invite__lede { font-size: 16px; margin-bottom: 16px; }
+  .page-paper { padding: 12px 13px 14px; }
+  .page-head { margin-bottom: 10px; }
+  .page-head__title { font-size: clamp(22px, 6.5vw, 30px); }
+  .page-head__eyebrow { font-size: 11px; letter-spacing: .25em; }
+  .invite__lede { font-size: 15px; margin-bottom: 8px; }
   .invite__grid,
   .about__grid,
-  .rsvp__row--two { grid-template-columns: 1fr; gap: 8px; }
-  .invite__cell { padding: 10px 12px; }
-  .invite__value { font-size: 17px; }
-  .invite__label { font-size: 11px; }
-  .invite__hint { font-size: 12px; }
-  .invite__handwritten { font-size: 16px; }
-  .about__lede { font-size: 15px; margin-bottom: 16px; }
-  .about__chip { padding: 10px 12px; }
-  .about__chip-title { font-size: 11px; }
-  .about__chip p { font-size: 14px; }
-  .agenda__item { padding: 10px 0; }
-  .agenda__body h3 { font-size: 17px; }
-  .agenda__body p { font-size: 14px; }
-  .agenda__time { font-size: 11px; }
-  .travel__row { grid-template-columns: 70px 1fr; padding: 8px 12px; gap: 10px; }
-  .travel__k { font-size: 11px; }
-  .travel__v { font-size: 14px; }
-  .travel__title { font-size: 12px; }
-  .rsvp__lede { font-size: 15px; margin-bottom: 16px; }
-  .field input, .field select, .field textarea { padding: 9px 11px; font-size: 15px; }
-  .field__label { font-size: 11px; }
-  .btn { padding: 12px 20px; font-size: 13px; }
-  .rsvp__fineprint { font-size: 12px; }
+  .rsvp__row--two { grid-template-columns: 1fr; gap: 5px; }
+  .invite__cell { padding: 7px 10px; }
+  .invite__value { font-size: 15px; }
+  .invite__label { font-size: 10px; }
+  .invite__hint { font-size: 11px; }
+  .invite__handwritten { font-size: 13px; margin-top: 4px; }
+  .about__lede { font-size: 14px; line-height: 1.4; margin-bottom: 7px; }
+  .about__grid { margin: 0 0 7px; }
+  .about__chip { padding: 6px 9px; }
+  .about__chip-title { font-size: 10px; margin-bottom: 3px; }
+  .about__chip p { font-size: 12px; line-height: 1.3; }
+  .agenda__item { padding: 7px 0; gap: 3px; }
+  .agenda__body h3 { font-size: 15px; }
+  .agenda__body p { font-size: 13px; line-height: 1.4; }
+  .agenda__time { font-size: 10px; }
+  .travel__title { font-size: 11px; margin: 0 0 5px; }
+  .travel__rows { gap: 4px; }
+  .travel__row { grid-template-columns: 56px 1fr; padding: 5px 9px; gap: 8px; }
+  .travel__k { font-size: 10px; }
+  .travel__v { font-size: 13px; line-height: 1.35; }
+  .rsvp__lede { font-size: 14px; margin-bottom: 8px; }
+  .rsvp { gap: 7px; }
+  .field { gap: 3px; }
+  .field__label { font-size: 10px; }
+  .field input, .field select, .field textarea { padding: 7px 10px; font-size: 14px; }
+  .field textarea { min-height: 55px; }
+  .rsvp__actions { margin-top: 4px; gap: 10px; }
+  .btn { padding: 10px 16px; font-size: 12px; }
+  .rsvp__fineprint { font-size: 11px; min-width: 0; }
   .rsvp-shortcut { bottom: 64px; right: 14px; padding: 8px 12px 8px 14px; gap: 8px; }
   .rsvp-shortcut__label { font-size: 13px; }
 }
@@ -1065,17 +1071,36 @@ input, select, textarea, button { font-family: inherit; }
 /* Landscape phone — short height, keep the book usable */
 @media (max-height: 480px) and (orientation: landscape) {
   :root {
-    --book-h: calc(100vh - 60px);
+    --book-h: calc(100vh - 52px);
     --cover-top:    6px;
     --cover-bottom: 6px;
     --cover-left:   8px;
     --cover-right:  16px;
     --page-peek: 2px;
   }
-  .topbar { padding: 8px 14px; }
-  .page-paper { padding: 14px 18px 16px; }
-  .page-head { margin-bottom: 8px; }
-  .page-head__title { font-size: 26px; }
+  .topbar { padding: 6px 14px; height: 44px; }
+  .page-paper { padding: 10px 16px 12px; }
+  .page-head { margin-bottom: 6px; }
+  .page-head__eyebrow { font-size: 10px; }
+  .page-head__title { font-size: clamp(18px, 4.5vh, 24px); }
+  .invite__lede { font-size: 13px; margin-bottom: 6px; }
+  .invite__grid { gap: 5px; margin: 0 auto 6px; grid-template-columns: 1fr 1fr; }
+  .invite__cell { padding: 5px 8px; }
+  .invite__value { font-size: 14px; }
+  .invite__handwritten { font-size: 12px; margin-top: 4px; }
+  .about__lede { font-size: 13px; line-height: 1.35; margin-bottom: 5px; }
+  .about__grid { gap: 5px; margin: 0 0 5px; grid-template-columns: 1fr 1fr; }
+  .about__chip { padding: 5px 8px; }
+  .about__chip p { font-size: 11px; line-height: 1.25; }
+  .travel__rows { gap: 3px; }
+  .travel__row { padding: 4px 8px; }
+  .agenda__item { padding: 5px 0; }
+  .agenda__body p { font-size: 12px; line-height: 1.35; }
+  .rsvp { gap: 5px; }
+  .field input, .field select, .field textarea { padding: 6px 9px; font-size: 13px; }
+  .field textarea { min-height: 44px; }
+  .chapters { bottom: 6px; }
+  .rsvp-shortcut { bottom: 52px; }
 }
 
 /* reduced motion */
