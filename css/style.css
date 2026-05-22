@@ -517,7 +517,7 @@ input, select, textarea, button { font-family: inherit; }
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
-  scrollbar-color: rgba(86,52,43,.3) transparent;
+  scrollbar-color: rgba(86,52,43,.65) rgba(86,52,43,.1);
   background:
     url("../assets/page-texture.jpg") center/cover no-repeat,
     linear-gradient(180deg, var(--c-paper) 0%, var(--c-paper-2) 100%);
@@ -533,6 +533,21 @@ input, select, textarea, button { font-family: inherit; }
   width: 40px;
   background: linear-gradient(to right, rgba(86,52,43,.18), transparent);
   pointer-events: none;
+}
+
+/* WebKit scrollbar — Chrome/Safari ignore scrollbar-color so style explicitly */
+.page-paper::-webkit-scrollbar { width: 6px; }
+.page-paper::-webkit-scrollbar-track {
+  background: rgba(86,52,43,.1);
+  border-radius: 3px;
+  margin: 4px 0;
+}
+.page-paper::-webkit-scrollbar-thumb {
+  background: rgba(86,52,43,.55);
+  border-radius: 3px;
+}
+.page-paper::-webkit-scrollbar-thumb:hover {
+  background: rgba(86,52,43,.8);
 }
 
 /* decorative corners */
