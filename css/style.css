@@ -630,8 +630,8 @@ input, select, textarea, button { font-family: inherit; }
   font-size: 13px;
   letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--c-gold);
-  text-shadow: 0 1px 4px rgba(0,0,0,.8);
+  color: #fff8e8;
+  text-shadow: 0 1px 6px rgba(0,0,0,.95), 0 2px 14px rgba(0,0,0,.75);
   line-height: 1.5;
 }
 .cover__date-time {
@@ -639,7 +639,8 @@ input, select, textarea, button { font-family: inherit; }
   font-size: 11px;
   letter-spacing: .15em;
   text-transform: uppercase;
-  color: rgba(230,173,64,.75);
+  color: rgba(255,248,232,.8);
+  text-shadow: 0 1px 6px rgba(0,0,0,.95), 0 2px 12px rgba(0,0,0,.7);
   text-shadow: 0 1px 4px rgba(0,0,0,.8);
   margin-top: 2px;
 }
