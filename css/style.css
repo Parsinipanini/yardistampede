@@ -515,8 +515,11 @@ a, label { touch-action: manipulation; }
   flex: 1;
   min-height: 0;
   padding: 28px 38px 32px;
-  overflow-y: auto;
+  overflow-y: scroll;              /* 'scroll' is more reliable than 'auto' inside 3D contexts */
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; /* fix iOS Safari scroll inside preserve-3d parent */
+  touch-action: pan-y;             /* tell the browser this element scrolls vertically */
+  overscroll-behavior: contain;    /* prevent scroll chaining to parent */
   scrollbar-width: thin;
   scrollbar-color: rgba(86,52,43,.65) rgba(86,52,43,.1);
   background:

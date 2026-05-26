@@ -230,6 +230,8 @@
   /* =========================================================
      MOUSE WHEEL — scroll page content only, never flip pages
      ========================================================= */
+  // Desktop wheel scroll — kept passive on touch devices so native scroll is unblocked.
+  const isTouchDevice = window.matchMedia('(hover: none)').matches;
   window.addEventListener('wheel', (e) => {
     const paper = e.target.closest('.page-paper');
     if (!paper) return;
@@ -237,7 +239,7 @@
     if (maxScroll <= 0) return;
     paper.scrollTop = Math.max(0, Math.min(maxScroll, paper.scrollTop + e.deltaY));
     e.preventDefault();
-  }, { passive: false });
+  }, { passive: isTouchDevice });
 
   /* =========================================================
      DRAG TO FLIP
