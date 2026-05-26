@@ -20,7 +20,6 @@
   const navPrev       = $('#navPrev');
   const navNext       = $('#navNext');
   const soundToggle   = $('#soundToggle');
-  const hint          = $('#hint');
   const pageNow       = $('#pageNow');
   const pageTotal     = $('#pageTotal');
   const rsvpShortcut  = $('#rsvpShortcut');
@@ -117,8 +116,7 @@
     applyPagePeek();
     // Small delay so the book has time to flatten before the page flips
     setTimeout(() => flipForward(), 600);
-    // Fade out the hint after first interaction
-    setTimeout(() => hint.classList.add('is-hidden'), 4000);
+
   };
 
   coverOpen.addEventListener('click', (e) => {
