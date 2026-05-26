@@ -242,6 +242,29 @@
   }, { passive: isTouchDevice });
 
   /* =========================================================
+     TOUCH SCROLL — iOS Safari / preserve-3d fix
+     Native overflow scroll breaks inside transform-style:preserve-3d
+     parents on iOS. Drive it manually so the RSVP page is scrollable.
+     ========================================================= */
+  let _touchY = 0, _touchPaper = null;
+  document.addEventListener('touchstart', (e) => {
+    const paper = e.target.closest('.page-paper');
+    if (!paper) return;
+    _touchPaper = paper;
+    _touchY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    if (!_touchPaper) return;
+    const dy = _touchY - e.touches[0].clientY;
+    _touchY = e.touches[0].clientY;
+    const maxScroll = _touchPaper.scrollHeight - _touchPaper.clientHeight;
+    if (maxScroll <= 0) return;
+    _touchPaper.scrollTop = Math.max(0, Math.min(maxScroll, _touchPaper.scrollTop + dy));
+  }, { passive: true });
+  document.addEventListener('touchend',    () => { _touchPaper = null; }, { passive: true });
+  document.addEventListener('touchcancel', () => { _touchPaper = null; }, { passive: true });
+
+  /* =========================================================
      DRAG TO FLIP
      ========================================================= */
   const setupDrag = (corner) => {
