@@ -66,8 +66,9 @@ body {
 }
 
 img { display: block; max-width: 100%; }
-button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; touch-action: manipulation; }
 input, select, textarea, button { font-family: inherit; }
+a, label { touch-action: manipulation; }
 
 /* =========================================================
    SCENE — paper cutout landscape behind the book
@@ -655,7 +656,6 @@ input, select, textarea, button { font-family: inherit; }
   letter-spacing: .15em;
   text-transform: uppercase;
   color: rgba(255,248,232,.8);
-  text-shadow: 0 1px 6px rgba(0,0,0,.95), 0 2px 12px rgba(0,0,0,.7);
   text-shadow: 0 1px 4px rgba(0,0,0,.8);
   margin-top: 2px;
 }
@@ -1090,6 +1090,7 @@ input, select, textarea, button { font-family: inherit; }
   box-shadow: 0 20px 60px rgba(0,0,0,.6);
   pointer-events: none;
   opacity: 0;
+  will-change: opacity, transform;
   transition: opacity .2s ease, transform .2s ease;
 }
 .size-hover-preview.is-visible {
@@ -1113,6 +1114,7 @@ input, select, textarea, button { font-family: inherit; }
   align-items: center;
   justify-content: center;
   padding: 24px;
+  will-change: opacity;
 }
 .guide-lightbox[hidden] { display: none; }
 .guide-lightbox__img {
@@ -1124,18 +1126,23 @@ input, select, textarea, button { font-family: inherit; }
 }
 .guide-lightbox__close {
   position: absolute;
-  top: 18px;
-  right: 22px;
-  background: none;
-  border: none;
+  top: 12px;
+  right: 12px;
+  /* minimum 44×44 touch target */
+  min-width: 44px;
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  background: rgba(0,0,0,.45);
+  border-radius: 50%;
   color: #fff;
-  font-size: 36px;
+  font-size: 28px;
   line-height: 1;
   cursor: pointer;
-  opacity: .8;
-  transition: opacity .15s ease;
+  opacity: .85;
+  transition: opacity .15s ease, background .15s ease;
 }
-.guide-lightbox__close:hover { opacity: 1; }
+.guide-lightbox__close:hover { opacity: 1; background: rgba(0,0,0,.65); }
 
 /* =========================================================
    RESPONSIVE
@@ -1303,6 +1310,32 @@ input, select, textarea, button { font-family: inherit; }
   .field textarea { min-height: 44px; }
   .chapters { bottom: 6px; }
   .rsvp-shortcut { bottom: 52px; }
+}
+
+/* Touch / no-hover devices — hide the mouse-only hover preview;
+   tap-to-lightbox is the mobile interaction instead. */
+@media (hover: none) {
+  .size-hover-preview { display: none !important; }
+  /* Make thumbnails bigger & easier to tap on touch screens */
+  .size-thumb img { width: 88px; height: 110px; }
+  .size-thumb span { font-size: 11px; }
+}
+
+/* Mobile RSVP tweaks */
+@media (max-width: 540px) {
+  /* Prevent iOS Safari from auto-zooming on input focus —
+     any input < 16px triggers the zoom; keep it at 16px. */
+  .field input,
+  .field select,
+  .field textarea { font-size: 16px; }
+
+  /* Gift-head: let label + thumbnails stack when they don't fit side-by-side */
+  .rsvp__gift-head { flex-direction: column; align-items: flex-start; gap: 6px; }
+
+  /* Hover preview is hidden on touch (see above), but size the
+     lightbox image edge-to-edge for comfortable reading */
+  .guide-lightbox { padding: 12px; }
+  .guide-lightbox__img { max-width: 100%; border-radius: 6px; }
 }
 
 /* reduced motion */
