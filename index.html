@@ -366,13 +366,42 @@
                 <div class="rsvp__row">
                   <label class="field">
                     <span class="field__label">Attending?</span>
-                    <select name="attending" required>
+                    <select name="attending" id="attendingSelect" required>
                       <option value="">Choose&hellip;</option>
                       <option value="yes">Yes, with bells on</option>
                       <option value="no">Regretfully declining</option>
                     </select>
                   </label>
                 </div>
+
+                <!-- Gift shirt — revealed when attending = yes -->
+                <div class="rsvp__gift" id="giftSection" hidden>
+                  <div class="rsvp__gift-head">
+                    <span class="field__label">Complimentary gift shirt</span>
+                    <span class="rsvp__size-links">
+                      Size guide:&nbsp;
+                      <a href="https://drive.google.com/file/d/1r-a7JR95nWULakq7FK9-xHmlIyaHqc9V/view" target="_blank" rel="noopener">Women&rsquo;s&thinsp;&#x2460;</a>&thinsp;<a href="https://drive.google.com/file/d/11cEe8lEU4znUjtFmYf0DB3Uyxrrlm9C3/view" target="_blank" rel="noopener">&#x2461;</a>&ensp;&middot;&ensp;<a href="https://drive.google.com/file/d/1730nPaYPtoh-4qWO6Td1RG8imL-raF-D/view" target="_blank" rel="noopener">Men&rsquo;s&thinsp;&#x2460;</a>&thinsp;<a href="https://drive.google.com/file/d/1SnvMWLYrOmAznHudjT4mb117rkzuyN5n/view" target="_blank" rel="noopener">&#x2461;</a>
+                    </span>
+                  </div>
+                  <div class="rsvp__row rsvp__row--two">
+                    <label class="field">
+                      <span class="field__label">Cut</span>
+                      <select name="shirt_cut" id="shirtCut">
+                        <option value="">Choose&hellip;</option>
+                        <option value="womens">Women&rsquo;s</option>
+                        <option value="mens">Men&rsquo;s</option>
+                        <option value="no_gift">No gift &mdash; thank you kindly</option>
+                      </select>
+                    </label>
+                    <label class="field" id="shirtSizeWrap" hidden>
+                      <span class="field__label">Size</span>
+                      <select name="shirt_size" id="shirtSize">
+                        <option value="">Choose&hellip;</option>
+                      </select>
+                    </label>
+                  </div>
+                </div>
+
                 <label class="field field--full">
                   <span class="field__label">Dietary or accessibility notes</span>
                   <textarea name="notes" rows="3" placeholder="Optional"></textarea>

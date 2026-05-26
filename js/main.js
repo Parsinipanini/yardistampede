@@ -615,10 +615,46 @@
 
     function showSuccess() {
       // hide the inputs, reveal success
-      $$('.rsvp__row, .field--full, .rsvp__actions', form).forEach(el => (el.style.display = 'none'));
+      $$('.rsvp__row, .field--full, .rsvp__actions, .rsvp__gift', form).forEach(el => (el.style.display = 'none'));
       success.hidden = false;
       success.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
+
+    /* Gift shirt — show/hide section + populate sizes */
+    const attendingSelect = document.getElementById('attendingSelect');
+    const giftSection     = document.getElementById('giftSection');
+    const shirtCut        = document.getElementById('shirtCut');
+    const shirtSizeWrap   = document.getElementById('shirtSizeWrap');
+    const shirtSize       = document.getElementById('shirtSize');
+
+    const SIZES = {
+      womens: ['XS', 'S', 'M', 'L', 'XL', '2XL'],
+      mens:   ['S', 'M', 'L', 'XL', '2XL', '3XL']
+    };
+
+    function populateSizes(cut) {
+      shirtSize.innerHTML = '<option value="">Choose…</option>' +
+        (SIZES[cut] || []).map(s => `<option value="${s}">${s}</option>`).join('');
+    }
+
+    attendingSelect?.addEventListener('change', () => {
+      giftSection.hidden = attendingSelect.value !== 'yes';
+      if (giftSection.hidden) {
+        shirtCut.value = '';
+        shirtSizeWrap.hidden = true;
+      }
+    });
+
+    shirtCut?.addEventListener('change', () => {
+      const v = shirtCut.value;
+      if (v === 'womens' || v === 'mens') {
+        populateSizes(v);
+        shirtSizeWrap.hidden = false;
+      } else {
+        shirtSizeWrap.hidden = true;
+        shirtSize.innerHTML = '<option value="">Choose…</option>';
+      }
+    });
   }
 
   /* =========================================================

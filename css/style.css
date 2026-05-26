@@ -1023,6 +1023,31 @@ input, select, textarea, button { font-family: inherit; }
   color: var(--c-burgundy);
 }
 
+.rsvp__gift {
+  display: grid;
+  gap: 8px;
+}
+.rsvp__gift-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.rsvp__size-links {
+  font-family: var(--ff-accent);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  opacity: .65;
+  white-space: nowrap;
+}
+.rsvp__size-links a {
+  color: var(--c-burgundy);
+  text-decoration: none;
+}
+.rsvp__size-links a:hover { text-decoration: underline; }
+
 /* =========================================================
    RESPONSIVE
    Hardcover overhang, book size, and content scale at each
