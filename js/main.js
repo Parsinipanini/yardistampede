@@ -656,6 +656,38 @@
       }
     });
 
+    /* Size guide hover preview */
+    const hoverPreview = document.getElementById('sizeHoverPreview');
+    const hoverImg     = document.getElementById('sizeHoverImg');
+
+    document.querySelectorAll('.size-thumb').forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        hoverImg.src = btn.dataset.guide;
+        hoverImg.alt = btn.querySelector('span').textContent;
+
+        // Position: prefer right of button, flip left if too close to edge
+        const rect = btn.getBoundingClientRect();
+        const panelW = 380;
+        const margin = 12;
+        let left = rect.right + margin;
+        if (left + panelW > window.innerWidth - margin) {
+          left = rect.left - panelW - margin;
+        }
+        // Vertical: align top of panel with top of button, clamp to viewport
+        let top = rect.top;
+        const maxTop = window.innerHeight - 500; // rough panel height
+        top = Math.max(margin, Math.min(top, maxTop));
+
+        hoverPreview.style.left = left + 'px';
+        hoverPreview.style.top  = top  + 'px';
+        hoverPreview.classList.add('is-visible');
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        hoverPreview.classList.remove('is-visible');
+      });
+    });
+
     /* Size guide lightbox */
     const lightbox      = document.getElementById('guideLightbox');
     const lightboxImg   = document.getElementById('guideLightboxImg');

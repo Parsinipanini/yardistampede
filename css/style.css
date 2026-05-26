@@ -1052,14 +1052,11 @@ input, select, textarea, button { font-family: inherit; }
   border-radius: 6px;
   padding: 4px;
   cursor: pointer;
-  transform-origin: bottom center;
-  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  transition: border-color .15s ease, box-shadow .15s ease;
 }
 .size-thumb:hover {
   border-color: var(--c-burgundy);
-  box-shadow: 0 8px 24px rgba(0,0,0,.28);
-  transform: scale(2.4) translateY(-8px);
-  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0,0,0,.2);
 }
 .size-thumb img {
   width: 72px;
@@ -1077,6 +1074,29 @@ input, select, textarea, button { font-family: inherit; }
   letter-spacing: .06em;
   color: var(--c-burgundy);
   white-space: nowrap;
+}
+
+/* Hover preview panel — fixed so nothing clips it */
+.size-hover-preview {
+  position: fixed;
+  z-index: 9998;
+  width: 380px;
+  border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.55);
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity .18s ease, transform .18s ease;
+}
+.size-hover-preview.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+.size-hover-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* Lightbox */
