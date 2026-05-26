@@ -1029,10 +1029,20 @@ a, label { touch-action: manipulation; }
 }
 .rsvp__gift-head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
+}
+.rsvp__gift-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+.rsvp__gift-selects {
+  margin-top: 2px;
 }
 .rsvp__size-links {
   display: flex;

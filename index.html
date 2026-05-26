@@ -374,10 +374,29 @@
                   </label>
                 </div>
 
-                <!-- Gift shirt — revealed when attending = yes -->
+                <!-- Gift denim jacket — revealed when attending = yes -->
                 <div class="rsvp__gift" id="giftSection" hidden>
                   <div class="rsvp__gift-head">
-                    <span class="field__label">Complimentary gift shirt</span>
+                    <div class="rsvp__gift-info">
+                      <span class="field__label">Complimentary denim jacket</span>
+                      <div class="rsvp__row rsvp__row--two rsvp__gift-selects">
+                        <label class="field">
+                          <span class="field__label">Cut</span>
+                          <select name="shirt_cut" id="shirtCut">
+                            <option value="">Choose&hellip;</option>
+                            <option value="womens">Women&rsquo;s</option>
+                            <option value="mens">Men&rsquo;s</option>
+                            <option value="no_gift">No gift &mdash; thank you kindly</option>
+                          </select>
+                        </label>
+                        <label class="field" id="shirtSizeWrap" hidden>
+                          <span class="field__label">Size</span>
+                          <select name="shirt_size" id="shirtSize">
+                            <option value="">Choose&hellip;</option>
+                          </select>
+                        </label>
+                      </div>
+                    </div>
                     <div class="rsvp__size-links">
                       <button type="button" class="size-thumb" aria-label="View Women's size guide" data-guide="assets/Women.png">
                         <img src="assets/Women.png" alt="Women's apparel size guide" loading="lazy" decoding="async" />
@@ -388,23 +407,6 @@
                         <span>Men&rsquo;s guide</span>
                       </button>
                     </div>
-                  </div>
-                  <div class="rsvp__row rsvp__row--two">
-                    <label class="field">
-                      <span class="field__label">Cut</span>
-                      <select name="shirt_cut" id="shirtCut">
-                        <option value="">Choose&hellip;</option>
-                        <option value="womens">Women&rsquo;s</option>
-                        <option value="mens">Men&rsquo;s</option>
-                        <option value="no_gift">No gift &mdash; thank you kindly</option>
-                      </select>
-                    </label>
-                    <label class="field" id="shirtSizeWrap" hidden>
-                      <span class="field__label">Size</span>
-                      <select name="shirt_size" id="shirtSize">
-                        <option value="">Choose&hellip;</option>
-                      </select>
-                    </label>
                   </div>
                 </div>
 
