@@ -1079,24 +1079,28 @@ input, select, textarea, button { font-family: inherit; }
 /* Hover preview panel — fixed so nothing clips it */
 .size-hover-preview {
   position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%) scale(0.97);
   z-index: 9998;
-  width: 380px;
+  width: 340px;
+  max-height: 88vh;
+  overflow-y: auto;
   border-radius: 10px;
-  box-shadow: 0 20px 60px rgba(0,0,0,.55);
-  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
   pointer-events: none;
   opacity: 0;
-  transform: scale(0.96);
-  transition: opacity .18s ease, transform .18s ease;
+  transition: opacity .2s ease, transform .2s ease;
 }
 .size-hover-preview.is-visible {
   opacity: 1;
-  transform: scale(1);
+  transform: translateY(-50%) scale(1);
 }
 .size-hover-preview img {
   width: 100%;
   height: auto;
   display: block;
+  border-radius: 10px;
 }
 
 /* Lightbox */
