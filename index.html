@@ -379,8 +379,14 @@
                   <div class="rsvp__gift-head">
                     <span class="field__label">Complimentary gift shirt</span>
                     <div class="rsvp__size-links">
-                      <a href="https://drive.google.com/file/d/1r-a7JR95nWULakq7FK9-xHmlIyaHqc9V/view" target="_blank" rel="noopener">Women&rsquo;s size guide &#x2197;</a>
-                      <a href="https://drive.google.com/file/d/1730nPaYPtoh-4wWO6Td1RG8imL-raF-D/view" target="_blank" rel="noopener">Men&rsquo;s size guide &#x2197;</a>
+                      <button type="button" class="size-thumb" aria-label="View Women's size guide" data-guide="assets/Women.png">
+                        <img src="assets/Women.png" alt="Women's apparel size guide" />
+                        <span>Women&rsquo;s guide</span>
+                      </button>
+                      <button type="button" class="size-thumb" aria-label="View Men's size guide" data-guide="assets/Men.png">
+                        <img src="assets/Men.png" alt="Men's apparel size guide" />
+                        <span>Men&rsquo;s guide</span>
+                      </button>
                     </div>
                   </div>
                   <div class="rsvp__row rsvp__row--two">
@@ -474,5 +480,11 @@
        ============================================================ -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="js/main.js"></script>
+
+  <!-- Size guide lightbox -->
+  <div class="guide-lightbox" id="guideLightbox" aria-modal="true" role="dialog" aria-label="Size guide" hidden>
+    <button class="guide-lightbox__close" id="guideLightboxClose" aria-label="Close">&times;</button>
+    <img class="guide-lightbox__img" id="guideLightboxImg" src="" alt="Size guide" />
+  </div>
 </body>
 </html>

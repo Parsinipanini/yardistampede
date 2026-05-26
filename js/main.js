@@ -655,6 +655,33 @@
         shirtSize.innerHTML = '<option value="">Choose…</option>';
       }
     });
+
+    /* Size guide lightbox */
+    const lightbox      = document.getElementById('guideLightbox');
+    const lightboxImg   = document.getElementById('guideLightboxImg');
+    const lightboxClose = document.getElementById('guideLightboxClose');
+
+    document.querySelectorAll('.size-thumb').forEach(btn => {
+      btn.addEventListener('click', () => {
+        lightboxImg.src = btn.dataset.guide;
+        lightboxImg.alt = btn.querySelector('span').textContent;
+        lightbox.hidden = false;
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    lightboxClose?.addEventListener('click', closeLightbox);
+    lightbox?.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !lightbox.hidden) closeLightbox();
+    });
   }
 
   /* =========================================================
